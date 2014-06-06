@@ -1,0 +1,8 @@
+{% extends "core/base.html" %}
+{% block content %}
+        <ul>
+        {% for b in boards %}
+            <li><a href="/board/{{ b.id }}">{{ b.title }}</a></li>
+        {% endfor %}
+        </ul>
+{% endblock %}
