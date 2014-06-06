@@ -1,5 +1,6 @@
 {% extends "core/base.html" %}
 {% block content %}
+        <h1>Boards</h1>
         <ul>
         {% for b in boards %}
             <li><a href="/board/{{ b.id }}">{{ b.title }}</a></li>

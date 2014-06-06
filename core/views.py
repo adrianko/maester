@@ -7,4 +7,5 @@ def home(request):
 
 def board(request):
     id = request.path.split('/')[2]
-    return HttpResponse("<h1>"+Board.objects.get(pk=id).title+"</h1>")
+    b = Board.objects.get(pk=id)
+    return render_to_response("core/board.html", {"title": b.title, "description": b.description})
