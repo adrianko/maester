@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from json import dumps
-from boards import *
+import boards
+import categories
+import tasks
+import users
 
 #response class
 class Response:
@@ -19,22 +22,27 @@ def get(request):
     id = params[4]
     if item == "board":
         if len(params) == 6 and params[5] == "categories":
-            response = boardCategories(response, id)
+            response = boards.boardCategories(response, id)
         else:
-            response = board(response, id)
+            response = boards.board(response, id)
     elif item == "category":
         if len(params) == 6 and params[5] == "tasks":
-            response = categoryTasks(response, id)
+            response = categories.categoryTasks(response, id)
         else:
-            response = category(response, id)
+            response = categories.category(response, id)
     elif item == "task":
-        if len(params) == 6 and params[5] == 'users':
-            response = taskUsers(response, id)
+        if len(params) == 6 and params[5] == "users":
+            response = tasks.taskUsers(response, id)
         else:
-            response = task(response, id)
+            response = tasks.task(response, id)
+    elif item == "user":
+        if len(params) == 6 and params[5] == "tasks":
+            response = users.userTasks(response, id)
+        else:
+            response = users.user(response, id)
     else:
         pass
-    return HttpResponse(dumps(response.dataDump()), content_type="application/json")
+    return HttpResponse(dumps(response.dataDump(), indent=4), content_type="application/json")
 
 def set(request):
     pass
