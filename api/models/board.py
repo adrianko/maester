@@ -6,4 +6,4 @@ class Board(models.Model):
 
     class Meta:
         db_table = 'board'
-        app_label = 'core'
+        app_label = 'api'

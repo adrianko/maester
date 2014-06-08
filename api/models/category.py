@@ -9,4 +9,4 @@ class Category(models.Model):
 
     class Meta:
         db_table = 'category'
-        app_label = 'core'
+        app_label = 'api'
