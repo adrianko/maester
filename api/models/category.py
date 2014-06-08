@@ -1,6 +1,7 @@
 from django.db import models
 from board import Board
 
+
 class Category(models.Model):
     board = models.ForeignKey(Board)
     title = models.CharField(max_length=255)

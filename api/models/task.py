@@ -1,6 +1,7 @@
 from django.db import models
 from category import Category
 
+
 class Task(models.Model):
     category = models.ForeignKey(Category)
     title = models.CharField(max_length=1000)

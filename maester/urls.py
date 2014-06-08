@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     #dev only
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^$', 'core.views.home', name='home'),
-    url(r'^board/[0-9]+$', 'core.views.board', name='boards'),
+    url(r'^$', 'core.views.home'),
+    url(r'^board/[0-9]+$', 'core.views.board'),
+    url(r'^api/[0-9a-zA-Z\/_-]+$', 'api.views.response'),
 )
