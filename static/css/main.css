@@ -1,1 +1,1 @@
-.table tr td{border:1px solid #ddd}
+.table tr th{background:#ddd}.table tr td,.table tr th{border:1px solid #ddd}

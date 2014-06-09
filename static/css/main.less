@@ -1,4 +1,10 @@
-@tbl-border: 1px solid #ddd;
-.table tr td {
+@tbl-bg: #ddd;
+@tbl-border: 1px solid @tbl-bg;
+
+.table tr th{
+    background: @tbl-bg;
+}
+
+.table tr td, .table tr th {
     border: @tbl-border;
 }
