@@ -1,6 +1,7 @@
 @tbl-bg: #ddd;
 @tbl-border: 1px solid @tbl-bg;
 @col-width: 300px;
+
 .table tr th{
     background: @tbl-bg;
 }
@@ -8,6 +9,7 @@
 .table tr td, .table tr th {
     border: @tbl-border;
     width: @col-width !important;
+    min-width: @col-width - 50;
 }
 
 .container.board {
