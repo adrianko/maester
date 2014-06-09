@@ -1,10 +1,21 @@
 #! /usr/bin/env python
+"""
+Squishy
+
+Description:
+Compiles LESS files into minified css using 'lessc'
+Converts CoffeeScript into JavaScript using 'coffee' and minifies js using 'minify'
+
+Dependencies:
+npm - coffee-script, less, minifier
+"""
 from os import listdir, devnull
 from os.path import isfile, join
 from re import compile
 from subprocess import call, PIPE, STDOUT
 DEVNULL = open(devnull, 'wb')
 
+#specify paths to less and coffee files
 css_path = "static/css/"
 js_path = "static/js/"
 
