@@ -10,7 +10,6 @@ def category(response, id):
     return response
 
 def categoryTasks(response, id):
-    ct = Task.objects.filter(category_id=id)
-    response.setOk()
-    response.data = [t.fields() for t in ct]
+    if category(response, id).code == 200:
+        response.data = [t.fields() for t in Task.objects.filter(category_id=id)]
     return response

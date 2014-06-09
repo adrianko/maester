@@ -10,7 +10,6 @@ def board(response, id):
     return response
 
 def boardCategories(response, id):
-    bc = Category.objects.filter(board_id=id)
-    response.setOk()
-    response.data = [c.fields() for c in bc]
+    if board(response, id).code == 200:
+        response.data = [c.fields() for c in Category.objects.filter(board_id=id)]
     return response

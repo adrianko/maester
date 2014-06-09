@@ -1,4 +1,5 @@
 class Response:
+
     def __init__(self):
         self.code = 404
         self.msg = ""

@@ -10,7 +10,6 @@ def task(response, id):
     return response
 
 def taskUsers(response, id):
-    us = User.objects.filter(task__pk=id)
-    response.setOk()
-    response.data = [u.fields() for u in us]
+    if task(response, id).code == 200:
+        response.data = [u.fields() for u in User.objects.filter(task__pk=id)]
     return response

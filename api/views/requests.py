@@ -19,7 +19,10 @@ def parse(request):
         else:
             response.setMoreInfo()
 
-    return HttpResponse(dumps(response.serialize(), indent=4), content_type="application/json")
+    return HttpResponse(
+        dumps(response.serialize(), indent=4),
+        content_type="application/json"
+    )
 
 #parse get request
 def get(response, params):
