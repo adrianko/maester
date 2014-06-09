@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from json import dumps
 import boards
 import categories
@@ -11,38 +11,55 @@ class Response:
         self.code = 404
         self.data = []
 
-    def dataDump(self):
+    def serialize(self):
         return self.__dict__
 
-#parse get request
-def get(request):
+def parse(request):
     params = request.path.split('/')
     response = Response()
-    item = params[3]
-    id = params[4]
-    if item == "board":
-        if len(params) == 6 and params[5] == "categories":
-            response = boards.boardCategories(response, id)
-        else:
-            response = boards.board(response, id)
-    elif item == "category":
-        if len(params) == 6 and params[5] == "tasks":
-            response = categories.categoryTasks(response, id)
-        else:
-            response = categories.category(response, id)
-    elif item == "task":
-        if len(params) == 6 and params[5] == "users":
-            response = tasks.taskUsers(response, id)
-        else:
-            response = tasks.task(response, id)
-    elif item == "user":
-        if len(params) == 6 and params[5] == "tasks":
-            response = users.userTasks(response, id)
-        else:
-            response = users.user(response, id)
+    if len(params) <= 2:
+        return moreInfoMsg()
+    elif params[2] == "get":
+        response = get(response, params)
     else:
-        pass
-    return HttpResponse(dumps(response.dataDump(), indent=4), content_type="application/json")
+        response = moreInfoMsg(response)
+    return HttpResponse(dumps(response.serialize(), indent=4), content_type="application/json")
 
-def set(request):
+def moreInfoMsg(response):
+    response.code = 400
+    response.msg = "More information required"
+    return response
+
+#parse get request
+def get(response, params):
+    if len(params) >= 5:
+        item = params[3]
+        id = params[4]
+        if item == "board":
+            if len(params) == 6 and params[5] == "categories":
+                response = boards.boardCategories(response, id)
+            else:
+                response = boards.board(response, id)
+        elif item == "category":
+            if len(params) == 6 and params[5] == "tasks":
+                response = categories.categoryTasks(response, id)
+            else:
+                response = categories.category(response, id)
+        elif item == "task":
+            if len(params) == 6 and params[5] == "users":
+                response = tasks.taskUsers(response, id)
+            else:
+                response = tasks.task(response, id)
+        elif item == "user":
+            if len(params) == 6 and params[5] == "tasks":
+                response = users.userTasks(response, id)
+            else:
+                response = users.user(response, id)
+        else:
+            pass
+    else:
+        response = moreInfoMsg(response)
+    return response
+
+def set(params):
     pass

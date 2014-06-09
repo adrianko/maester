@@ -13,5 +13,5 @@ urlpatterns = patterns('',
 
     url(r'^$', 'core.views.home'),
     url(r'^board/[0-9]+$', 'core.views.board'),
-    url(r'^api/get/[0-9a-zA-Z\/_-]+$', 'api.views.get'),
+    url(r'^api[0-9a-zA-Z\/_-]+$', 'api.views.parse'),
 )

@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
 from django.http.response import HttpResponseNotFound
-from requests.models import Board
+from api.models import Board
 
 def board(request):
     id = int(request.path.split('/')[2])
