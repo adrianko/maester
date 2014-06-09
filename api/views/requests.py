@@ -12,6 +12,16 @@ class Response:
         self.msg = ""
         self.data = []
 
+    def setOk(self):
+        self.code = 200
+
+    def setNotFound(self):
+        self.code = 404
+
+    def setMoreInfo(self):
+        self.code = 400
+        self.msg = "More information required"
+
     def serialize(self):
         return self.__dict__
 
@@ -19,21 +29,16 @@ def parse(request):
     params = request.path.split('/')
     response = Response()
     if len(params) <= 2:
-        return moreInfoMsg()
+        response.setMoreInfo()
     else:
         if params[2] == "get":
             response = get(response, params)
         elif params[2] == "set":
             response = set(response, params)
         else:
-            response = moreInfoMsg(response)
+            response.setMoreInfo()
 
     return HttpResponse(dumps(response.serialize(), indent=4), content_type="application/json")
-
-def moreInfoMsg(response):
-    response.code = 400
-    response.msg = "More information required"
-    return response
 
 #parse get request
 def get(response, params):
@@ -63,7 +68,7 @@ def get(response, params):
         else:
             pass
     else:
-        response = moreInfoMsg(response)
+        response.setMoreInfo()
     return response
 
 def set(response, params):
