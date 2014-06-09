@@ -7,7 +7,7 @@ class Category(models.Model):
     description = models.CharField(max_length=500, null=True)
     order = models.IntegerField()
 
-    def fields(self):
+    def fetch(self):
         return {
             "id": self.pk,
             "board_id": self.board_id,

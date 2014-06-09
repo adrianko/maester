@@ -11,9 +11,8 @@ class Task(models.Model):
     duration = models.IntegerField(null=True)
     time_created = models.DateTimeField()
 
-    def fields(self):
-        us = User.objects.filter(task__pk=self.pk)
-        users = [u.fields() for u in us]
+    def fetch(self):
+        users = [u.fetch() for u in User.objects.filter(task__pk=self.pk)]
         return {
             "id": self.pk,
             "category_id": self.category_id,

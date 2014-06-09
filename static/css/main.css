@@ -1,1 +1,1 @@
-.table tr th{background:#ddd}.table tr td,.table tr th{border:1px solid #ddd}
+.table tr th{background:#ddd}.table tr td,.table tr th{border:1px solid #ddd;width:300px !important}.container.board{width:100% !important;padding:20px}.task{width:100% !important}
