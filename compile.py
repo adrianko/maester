@@ -20,5 +20,5 @@ for f in listdir(js_path):
     if isfile(join(js_path, f)) and cpattern.search(f):
         call(str("coffee -c "+js_path+f).split())
         name = f[:-6]
-        call(str("minify "+js_path+name+"js "+js_path+name+"min.js").split(), stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+        call(str("minify "+js_path+name+"js").split(), stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
         call(str("rm "+js_path+name+"js").split())
