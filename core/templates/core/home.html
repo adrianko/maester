@@ -1,9 +1,13 @@
 {% extends "core/base.html" %}
 {% block content %}
-        <h1>Boards</h1>
-        <ul>
-        {% for b in boards %}
-            <li><a href="/board/{{ b.id }}">{{ b.title }}</a></li>
-        {% endfor %}
-        </ul>
+        <div class="container">
+            <h1>Boards</h1>
+            <ul class="list-group" style="width:200px;">
+            {% for b in boards %}
+                <li class="list-group-item">
+                    <a href="/board/{{ b.id }}">{{ b.title }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
 {% endblock %}

@@ -1,5 +1,19 @@
 {% extends "core/base.html" %}
 {% block content %}
-        <h1>{{ title }}</h1>
-        <p>{{ description }}</p>
+        <div class="container">
+            <h1>{{ title }}</h1>
+            <p>{{ description }}</p>
+            <table class="table">
+                <tr>
+                {% for c in categories %}
+                    <td>{{ c.title }}</td>
+                {% endfor %}
+                </tr>
+                <tr>
+                {% for c in categories %}
+                    <td>&nbsp;</td>
+                {% endfor %}
+                </tr>
+            </table>
+        </div>
 {% endblock %}
