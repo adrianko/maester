@@ -9,6 +9,7 @@ import users
 class Response:
     def __init__(self):
         self.code = 404
+        self.msg = ""
         self.data = []
 
     def serialize(self):
@@ -19,10 +20,14 @@ def parse(request):
     response = Response()
     if len(params) <= 2:
         return moreInfoMsg()
-    elif params[2] == "get":
-        response = get(response, params)
     else:
-        response = moreInfoMsg(response)
+        if params[2] == "get":
+            response = get(response, params)
+        elif params[2] == "set":
+            response = set(response, params)
+        else:
+            response = moreInfoMsg(response)
+
     return HttpResponse(dumps(response.serialize(), indent=4), content_type="application/json")
 
 def moreInfoMsg(response):
@@ -61,5 +66,5 @@ def get(response, params):
         response = moreInfoMsg(response)
     return response
 
-def set(params):
-    pass
+def set(response, params):
+    return response
