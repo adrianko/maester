@@ -3,30 +3,19 @@
         <div class="container board">
             <h1>{{ title }}</h1>
             <p>{{ description }}</p>
-            <table class="table">
-                <thead>
-                    <tr>
-                    {% for c in categories %}
-                        <th>{{ c.title }}</th>
-                    {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    {% for c in categories %}
-                        <td>
-                        {% for t in c.tasks %}
-                            <div class="panel panel-default task">
-                                <div class="panel-heading">{{ t.title }}</div>
-                                <div class="panel-body">
-                                    {{ t.description }}
-                                </div>
-                            </div>
-                        {% endfor %}
-                        </td>
-                    {% endfor %}
-                    </tr>
-                <tbody>
-            </table>
+            {% for c in categories %}
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ c.title }}</h3>
+                </div>
+                <div class="panel-body">
+                {% for t in c.tasks %}
+                    <div class="well well-sm task">
+                        {{ t.title }}
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
 {% endblock %}

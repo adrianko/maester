@@ -32,25 +32,33 @@ def get(response, params):
         if item == "board":
             if len(params) == 6 and params[5] == "categories":
                 response = boards.getCategories(response, id)
-            else:
+            elif len(params) == 5:
                 response = boards.get(response, id)
+            else:
+                response.setInvalid()
         elif item == "category":
             if len(params) == 6 and params[5] == "tasks":
                 response = categories.getTasks(response, id)
-            else:
+            elif len(params) == 5:
                 response = categories.get(response, id)
+            else:
+                response.setInvalid()
         elif item == "task":
             if len(params) == 6 and params[5] == "users":
                 response = tasks.getUsers(response, id)
-            else:
+            elif len(params) == 5:
                 response = tasks.get(response, id)
+            else:
+                response.setInvalid()
         elif item == "user":
             if len(params) == 6 and params[5] == "tasks":
                 response = users.getTasks(response, id)
-            else:
+            elif len(params) == 5:
                 response = users.get(response, id)
+            else:
+                response.setInvalid()
         else:
-            pass
+            response.setInvalid()
     else:
         response.setMoreInfo()
     return response

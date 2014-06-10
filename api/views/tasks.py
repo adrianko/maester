@@ -13,3 +13,6 @@ def getUsers(response, id):
     if get(response, id).code == 200:
         response.data = [u.fetch() for u in User.objects.filter(task__pk=id)]
     return response
+
+def new(request):
+    pass
