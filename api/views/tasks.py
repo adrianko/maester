@@ -14,5 +14,9 @@ def getUsers(response, id):
         response.data = [u.fetch() for u in User.objects.filter(task__pk=id)]
     return response
 
-def new(request):
-    pass
+def create(request):
+    data = request.POST
+    if data == {}:
+        return False
+    else:
+        return True

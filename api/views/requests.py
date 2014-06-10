@@ -93,8 +93,10 @@ def set(response, request, params):
                 response.setInvalid()
         elif item == "task":
             if action == "new":
-                response.setOk()
-                response.msg = "set new task"
+                if tasks.create(request) is True:
+                    response.setOk()
+                else:
+                    response.setInvalid()
             elif response == "update":
                 response.setOk()
                 response.msg = "set update task"
