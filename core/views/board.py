@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
 from django.http.response import Http404
-from api.models import Board, Category, Task
+from api.models import Board, Category, Task, User
 
 def board(request):
     id = int(request.path.split('/')[2])
@@ -10,6 +10,7 @@ def board(request):
         b["categories"] = [c.fetch() for c in Category.objects.filter(board_id=id)]
         for c in b["categories"]:
             c["tasks"] = [t.fetch() for t in Task.objects.filter(category_id=c["id"])]
+        b["users"] = [u.fetch() for u in User.objects.all()]
         return render_to_response("core/board.html", b)
     except Board.DoesNotExist:
         raise Http404
