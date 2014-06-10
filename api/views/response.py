@@ -15,5 +15,9 @@ class Response:
         self.code = 400
         self.msg = "More information required"
 
+    def setInvalid(self):
+        self.code = 422
+        self.msg = "Invalid action"
+
     def serialize(self):
         return self.__dict__

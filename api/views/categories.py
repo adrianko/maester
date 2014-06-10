@@ -1,6 +1,6 @@
 from api.models import *
 
-def category(response, id):
+def get(response, id):
     try:
         c = Category.objects.get(pk=id)
         response.setOk()
@@ -9,7 +9,7 @@ def category(response, id):
         pass
     return response
 
-def categoryTasks(response, id):
-    if category(response, id).code == 200:
+def getTasks(response, id):
+    if get(response, id).code == 200:
         response.data = [t.fetch() for t in Task.objects.filter(category_id=id)]
     return response

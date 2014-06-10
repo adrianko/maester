@@ -1,6 +1,6 @@
 from api.models import *
 
-def user(response, id):
+def get(response, id):
     try:
         u = User.objects.get(pk=id)
         response.setOk()
@@ -9,7 +9,7 @@ def user(response, id):
         pass
     return response
 
-def userTasks(response, id):
-    if user(response, id).code == 200:
+def getTasks(response, id):
+    if get(response, id).code == 200:
         response.data = [t.fetch() for t in Task.objects.filter(users__pk=id)]
     return response

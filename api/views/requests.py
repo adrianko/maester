@@ -15,7 +15,7 @@ def parse(request):
         if params[2] == "get":
             response = get(response, params)
         elif params[2] == "set":
-            response = set(response, params)
+            response = set(response, request, params)
         else:
             response.setMoreInfo()
 
@@ -31,29 +31,84 @@ def get(response, params):
         id = params[4]
         if item == "board":
             if len(params) == 6 and params[5] == "categories":
-                response = boards.boardCategories(response, id)
+                response = boards.getCategories(response, id)
             else:
-                response = boards.board(response, id)
+                response = boards.get(response, id)
         elif item == "category":
             if len(params) == 6 and params[5] == "tasks":
-                response = categories.categoryTasks(response, id)
+                response = categories.getTasks(response, id)
             else:
-                response = categories.category(response, id)
+                response = categories.get(response, id)
         elif item == "task":
             if len(params) == 6 and params[5] == "users":
-                response = tasks.taskUsers(response, id)
+                response = tasks.getUsers(response, id)
             else:
-                response = tasks.task(response, id)
+                response = tasks.get(response, id)
         elif item == "user":
             if len(params) == 6 and params[5] == "tasks":
-                response = users.userTasks(response, id)
+                response = users.getTasks(response, id)
             else:
-                response = users.user(response, id)
+                response = users.get(response, id)
         else:
             pass
     else:
         response.setMoreInfo()
     return response
 
-def set(response, params):
+def set(response, request, params):
+    if len(params) >= 5:
+        item = params[3]
+        action = params[4]
+        if item == "board":
+            if action == "new":
+                response.setOk()
+                response.msg = "set new board"
+            elif response == "update":
+                response.setOk()
+                response.msg = "set update board"
+            elif response == "delete":
+                response.setOk()
+                response.msg = "set delete board"
+            else:
+                response.setInvalid()
+        elif item == "category":
+            if action == "new":
+                response.setOk()
+                response.msg = "set new category"
+            elif response == "update":
+                response.setOk()
+                response.msg = "set update category"
+            elif response == "delete":
+                response.setOk()
+                response.msg = "set delete category"
+            else:
+                response.setInvalid()
+        elif item == "task":
+            if action == "new":
+                response.setOk()
+                response.msg = "set new task"
+            elif response == "update":
+                response.setOk()
+                response.msg = "set update task"
+            elif response == "delete":
+                response.setOk()
+                response.msg = "set delete task"
+            else:
+                response.setInvalid()
+        elif item == "user":
+            if action == "new":
+                response.setOk()
+                response.msg = "set new user"
+            elif response == "update":
+                response.setOk()
+                response.msg = "set update user"
+            elif response == "delete":
+                response.setOk()
+                response.msg = "set delete user"
+            else:
+                response.setInvalid()
+        else:
+            response.setInvalid()
+    else:
+        response.setMoreInfo()
     return response

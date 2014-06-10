@@ -1,6 +1,6 @@
 from api.models import *
 
-def board(response, id):
+def get(response, id):
     try:
         b = Board.objects.get(pk=id)
         response.setOk()
@@ -9,7 +9,7 @@ def board(response, id):
         pass
     return response
 
-def boardCategories(response, id):
-    if board(response, id).code == 200:
+def getCategories(response, id):
+    if get(response, id).code == 200:
         response.data = [c.fetch() for c in Category.objects.filter(board_id=id)]
     return response
