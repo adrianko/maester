@@ -4,15 +4,15 @@
             <h1>{{ title }}</h1>
             <p>{{ description }}</p>
             {% for c in categories %}
-            <div class="panel panel-primary">
+            <div class="panel panel-primary" data-category="{{ c.id }}">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ c.title }}</h3>
                 </div>
                 <div class="panel-body">
                 {% for t in c.tasks %}
-                    <div class="well well-sm task">
-                        {{ t.title }}
-                    </div>
+                    {% with t.title as title %}
+                        {% include "components/task.html" %}
+                    {% endwith %}
                 {% endfor %}
                 <a href="#" class="new-task" data-category="{{ c.id }}" data-toggle="modal" data-target="#new-task-modal">Add task</a>
                 </div>
