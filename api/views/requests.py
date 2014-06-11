@@ -5,6 +5,7 @@ import boards
 import categories
 import tasks
 import users
+from django.conf import settings
 
 def parse(request):
     params = request.path.split('/')
@@ -57,6 +58,11 @@ def get(response, params):
                 response = users.get(response, id)
             else:
                 response.setInvalid()
+        elif item =="component":
+            with file(settings.BASE_DIR+"/core/templates/components/task.html") as f:
+                s = f.read()
+            response.setOk()
+            response.data = s
         else:
             response.setInvalid()
     else:
