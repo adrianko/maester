@@ -1,6 +1,7 @@
 (($) ->
     component_stash = {}
     modal = ""
+    
     $("a.new-task").on "click", ->
         $('#new-task-modal-title').val("")
         $('#new-task-modal-desc').val("")
@@ -9,7 +10,7 @@
         $('#new-task-modal-users').val("0")
         modal = $(this).attr('data-category')
         undefined
-        
+
     $("#new-task-modal-submit").on "click", ->
         if "task" not of component_stash
             #request component structure
