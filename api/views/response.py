@@ -7,7 +7,7 @@ class Response:
 
     def setOk(self):
         self.code = 200
-        self.code = "Success"
+        self.msg = "Success"
 
     def setNotFound(self):
         self.code = 404
