@@ -58,9 +58,6 @@ def get(response, params):
                 response = users.get(response, id)
             else:
                 response.setInvalid()
-        elif item =="component":
-            response.setOk()
-            response.data = components.task()
         else:
             response.setInvalid()
     else:
@@ -97,10 +94,8 @@ def set(response, request, params):
                 response.setInvalid()
         elif item == "task":
             if action == "new":
-                if tasks.create(request) is True:
-                    response.setOk()
-                else:
-                    response.setInvalid()
+                response.data = tasks.create(request.POST)
+                response.setOk() if response.data["success"] is True else response.setInvalid()
             elif response == "update":
                 response.setOk()
                 response.msg = "set update task"

@@ -1,4 +1,6 @@
 from api.models import *
+import components
+from datetime import datetime
 
 def get(response, id):
     try:
@@ -14,9 +16,18 @@ def getUsers(response, id):
         response.data = [u.fetch() for u in User.objects.filter(task__pk=id)]
     return response
 
-def create(request):
-    data = request.POST
+def create(data):
     if data == {}:
-        return False
+        response = {"success": False, "request": data}
     else:
-        return True
+        #description, users, duration
+        t = Task.objects.create(
+            title=data.get("data[title]"),
+            category=Category.objects.get(pk=data.get("data[category]")),
+            order=data.get("data[order]"),
+            time_created=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+        response = {"success": True, "id": t.fetch()["id"]}
+        if data["component"] == "1":
+            response["components"] = components.task()
+    return response
