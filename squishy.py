@@ -13,6 +13,7 @@ from os import listdir, devnull
 from os.path import isfile, join
 from re import compile
 from subprocess import call, PIPE, STDOUT
+from sys import argv
 DEVNULL = open(devnull, 'wb')
 
 #specify paths to less and coffee files
@@ -31,5 +32,8 @@ for f in listdir(js_path):
     if isfile(join(js_path, f)) and cpattern.search(f):
         call(str("coffee -c "+js_path+f).split())
         name = f[:-6]
-        call(str("minify "+js_path+name+"js").split(), stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-        call(str("rm "+js_path+name+"js").split())
+        if len(argv) > 1 and argv[1] == "debug":
+            call(str("mv "+js_path+name+"js "+js_path+name+"min.js").split())
+        else:
+            call(str("minify "+js_path+name+"js").split(), stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
+            call(str("rm "+js_path+name+"js").split())
