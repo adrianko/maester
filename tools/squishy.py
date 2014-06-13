@@ -10,15 +10,15 @@ Dependencies:
 npm - coffee-script, less, minifier
 """
 from os import listdir, devnull
-from os.path import isfile, join
+from os.path import isfile, join, dirname, realpath
 from re import compile
 from subprocess import call, PIPE, STDOUT
 from sys import argv
 DEVNULL = open(devnull, 'wb')
 
 #specify paths to less and coffee files
-css_path = "static/css/"
-js_path = "static/js/"
+css_path = dirname(realpath(__file__))+"/../static/css/"
+js_path = dirname(realpath(__file__))+"/../static/js/"
 
 pattern = compile(".less$")
 for f in listdir(css_path):

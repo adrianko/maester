@@ -21,17 +21,22 @@ def create(data):
     if data == {}:
         response = {"success": False, "request": data}
     else:
-        #description, users, duration
+        duration_units = {"h" : 3600, "d": 3600*24, "w": 3600*24*7, "m": 3600*24*7*28}
+        du = data.get("data[duration_unit]")
+        duration = 0
+        if du in duration_units:
+            duration = float(data.get("data[duration]"))*duration_units[du]
+
         t = Task(
             title=data.get("data[title]"),
             description=data.get("data[desc]"),
             category=Category.objects.get(pk=data.get("data[category]")),
             order=data.get("data[order]"),
-            duration=data.get("data[duration]")+data.get("data[duration_unit]"),
+            duration=duration,
             time_created=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         )
         t.save()
-        
+
         for x in loads(data.get("data[users]")):
             try:
                 t.users.add(User.objects.get(pk=int(x)))
@@ -39,7 +44,7 @@ def create(data):
             except User.DoesNotExist:
                 return {"success": False, "request": data}
 
-        response = {"success": True, "id": t.fetch()["id"]}
+        response = {"success": True, "id": t.fetch()["id"], "duration": duration, "du": du}
         if data["component"] == "1":
             response["components"] = components.task()
     return response

@@ -12,13 +12,12 @@ class Task(models.Model):
     time_created = models.DateTimeField()
 
     def fetch(self):
-        users = [u.fetch() for u in User.objects.filter(task__pk=self.pk)]
         return {
             "id": self.pk,
             "category_id": self.category_id,
             "title": self.title,
             "description": self.description,
-            "users": users,
+            "users": [u.fetch() for u in User.objects.filter(task__pk=self.pk)],
             "order": self.order,
             "duration": self.duration,
             "time_created": self.time_created.__str__()
