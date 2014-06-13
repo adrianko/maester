@@ -38,11 +38,13 @@ def create(data):
         t.save()
 
         for x in loads(data.get("data[users]")):
-            try:
-                t.users.add(User.objects.get(pk=int(x)))
-                t.save()
-            except User.DoesNotExist:
-                return {"success": False, "request": data}
+            x = int(x)
+            if x is not 0:
+                try:
+                    t.users.add(User.objects.get(pk=x))
+                    t.save()
+                except User.DoesNotExist:
+                    return {"success": False, "request": data}
 
         response = {"success": True, "id": t.fetch()["id"], "duration": duration, "du": du}
         if data["component"] == "1":
