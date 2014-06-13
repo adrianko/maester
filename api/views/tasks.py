@@ -37,6 +37,8 @@ def create(data):
         )
         t.save()
 
+        response = {"success": True, "id": t.fetch()["id"]}
+
         for x in loads(data.get("data[users]")):
             x = int(x)
             if x is not 0:
@@ -44,9 +46,8 @@ def create(data):
                     t.users.add(User.objects.get(pk=x))
                     t.save()
                 except User.DoesNotExist:
-                    return {"success": False, "request": data}
+                    pass
 
-        response = {"success": True, "id": t.fetch()["id"], "duration": duration, "du": du}
         if data["component"] == "1":
             response["components"] = components.task()
     return response
