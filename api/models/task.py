@@ -9,7 +9,7 @@ class Task(models.Model):
     users = models.ManyToManyField(User, null=True)
     order = models.IntegerField()
     duration = models.IntegerField(null=True)
-    time_created = models.DateTimeField()
+    time_created = models.IntegerField()
 
     def fetch(self):
         return {
@@ -20,7 +20,7 @@ class Task(models.Model):
             "users": [u.fetch() for u in User.objects.filter(task__pk=self.pk)],
             "order": self.order,
             "duration": self.duration,
-            "time_created": self.time_created.__str__()
+            "time_created": self.time_created
         }
 
     class Meta:

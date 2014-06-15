@@ -1,6 +1,6 @@
 from api.models import *
 import components
-from datetime import datetime
+from time import time
 from json import loads
 
 def get(response, id):
@@ -33,7 +33,7 @@ def create(data):
             category=Category.objects.get(pk=data.get("data[category]")),
             order=data.get("data[order]"),
             duration=duration,
-            time_created=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            time_created=int(time())
         )
         t.save()
 
