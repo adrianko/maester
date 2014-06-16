@@ -2,11 +2,6 @@
     component_stash = {}
     modal = ""
 
-    $.ajaxSetup
-        beforeSend: (xhr, settings) ->
-            unless (/^https?:.*/.test settings.url)
-                xhr.setRequestHeader "X-CSRFToken", getCookie "csrftoken"
-
     $("a.new-task").on "click", ->
         $('#new-task-modal-title').val("")
         $('#new-task-modal-desc').val("")
@@ -44,11 +39,6 @@
         $("div.panel[data-category='"+modal+"'] .panel-body")
             .append(component_stash.task.replace '{{ title }}', $('#new-task-modal-title').val())
         $("#new-task-modal").modal("hide")
-        undefined
-
-    getCookie = (name) ->
-        for cookie in document.cookie.split ";" when cookie and name is (cookie.split "=")[0]
-            return decodeURIComponent cookie[(1 + name.length)...]
         null
 
     undefined
