@@ -34,7 +34,11 @@
                     component_stash.task = data.data.components
                 createTask()
         undefined
-
+    $(".task-list").sortable({
+       axis: 'y',
+       containment: "parent",
+       placeholder: "placeholder"
+    }).disableSelection()
     createTask = () ->
         $("div.panel[data-category='"+modal+"'] .panel-body")
             .append(component_stash.task.replace '{{ title }}', $('#new-task-modal-title').val())
