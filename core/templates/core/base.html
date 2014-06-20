@@ -34,9 +34,11 @@
         </nav>
         {% block content %}
         {% endblock %}
+        <input type="hidden" id="csrf_token" value="{{ csrf_token }}" />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.2/jquery.ui.touch-punch.min.js"></script>
         <script src="/static/js/global.min.js"></script>
         <script src="/static/js/main.min.js"></script>
     </body>

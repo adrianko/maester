@@ -6,7 +6,7 @@ INSERT INTO `category` VALUES (3, 1, 'In Progress', 'Stuff being done', 2);
 INSERT INTO `category` VALUES (4, 2, 'Stuff', 'More stuff', 1);
 INSERT INTO `task` VALUES (1, 1, 'A task', 'something here', 1, 3600, 1402149032);
 INSERT INTO `task` VALUES (2, 1, 'Another task', 'something else here', 2, 7200, 1402235741);
-INSERT INTO `user` VALUES (1, 'ak', 'adrianchko@gmail.com');
+INSERT INTO `user` VALUES (1, 'ak', 'akcodes3@gmail.com');
 INSERT INTO `user` VALUES (2, 'mn', 'a@b.c');
 INSERT INTO `task_users` VALUES (1, 1, 1);
 INSERT INTO `task_users` VALUES (2, 1, 2);

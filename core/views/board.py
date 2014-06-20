@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.http.response import Http404
 from api.models import Board, Category, Task, User
+from django.core.context_processors import csrf
 
 def board(request):
     id = int(request.path.split('/')[2])
@@ -11,6 +12,7 @@ def board(request):
         for c in b["categories"]:
             c["tasks"] = [t.fetch() for t in Task.objects.filter(category_id=c["id"]).order_by("order")]
         b["users"] = [u.fetch() for u in User.objects.all()]
+        b["csrf_token"] = csrf(request)['csrf_token']
         return render_to_response("core/board.html", b)
     except Board.DoesNotExist:
         raise Http404

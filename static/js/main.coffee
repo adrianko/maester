@@ -1,7 +1,6 @@
 (($) ->
     component_stash = {}
     modal = ""
-
     $("a.new-task").on "click", ->
         $("#new-task-modal-title").val("")
         $("#new-task-modal-desc").val("")

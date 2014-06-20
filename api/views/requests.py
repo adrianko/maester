@@ -5,7 +5,6 @@ import boards
 import categories
 import tasks
 import users
-import components
 
 def parse(request):
     params = request.path.split('/')
