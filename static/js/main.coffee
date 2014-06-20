@@ -33,6 +33,8 @@
                 if component is 1
                     component_stash.task = data.data.components
                 createTask()
+            error: (jqXHR, textStatus, err) ->
+                console.log err
         undefined
 
     $(".task-list").sortable(
@@ -40,9 +42,18 @@
        containment: "parent",
        placeholder: "placeholder"
        stop: (e, ui) ->
-           console.log $(@).find('.task').attr("data-id")
+           $.ajax
+               type: "POST"
+               url: "/api/set/task/order"
+               data:
+                   order: JSON.stringify ($(t).attr('data-id') for t in $(@).parent().find('.task'))
+               success: (data) ->
+                   if data.code != 200
+                       console.log "Error: "+data.code
+               error: (jqXHR, textStatus, err) ->
+                   console.log err
     ).disableSelection()
-    
+
     createTask = () ->
         $("div.panel[data-category='"+modal+"'] .panel-body")
             .append(component_stash.task.replace '{{ title }}', $('#new-task-modal-title').val())
