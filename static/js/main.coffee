@@ -55,7 +55,7 @@
     ).disableSelection()
 
     createTask = () ->
-        $("div.panel[data-category='"+modal+"'] .panel-body")
+        $("div.panel[data-category='"+modal+"'] .panel-body .task-list")
             .append(component_stash.task.replace "{{ title }}", $("#new-task-modal-title").val())
         $("#new-task-modal").modal("hide")
         null
