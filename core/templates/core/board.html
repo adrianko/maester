@@ -12,7 +12,9 @@
                     <ul class="task-list">
                         {% for t in c.tasks %}
                             {% with t.title as title %}
+                            {% with t.id as id %}
                                 {% include "components/task.html" %}
+                            {% endwith %}
                             {% endwith %}
                         {% endfor %}
                     </ul>
