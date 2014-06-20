@@ -72,10 +72,10 @@ def set(response, request, params):
             if action == "new":
                 response.setOk()
                 response.msg = "set new board"
-            elif response == "update":
+            elif action == "update":
                 response.setOk()
                 response.msg = "set update board"
-            elif response == "delete":
+            elif action == "delete":
                 response.setOk()
                 response.msg = "set delete board"
             else:
@@ -84,10 +84,10 @@ def set(response, request, params):
             if action == "new":
                 response.setOk()
                 response.msg = "set new category"
-            elif response == "update":
+            elif action == "update":
                 response.setOk()
                 response.msg = "set update category"
-            elif response == "delete":
+            elif action == "delete":
                 response.setOk()
                 response.msg = "set delete category"
             else:
@@ -96,22 +96,25 @@ def set(response, request, params):
             if action == "new":
                 response.data = tasks.create(request.POST)
                 response.setOk() if response.data["success"] is True else response.setInvalid()
-            elif response == "update":
+            elif action == "update":
                 response.setOk()
                 response.msg = "set update task"
-            elif response == "delete":
+            elif action == "delete":
                 response.setOk()
                 response.msg = "set delete task"
+            elif action == "order":
+                response.setOk()
+                response.msg = "set task order"
             else:
                 response.setInvalid()
         elif item == "user":
             if action == "new":
                 response.setOk()
                 response.msg = "set new user"
-            elif response == "update":
+            elif action == "update":
                 response.setOk()
                 response.msg = "set update user"
-            elif response == "delete":
+            elif action == "delete":
                 response.setOk()
                 response.msg = "set delete user"
             else:
