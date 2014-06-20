@@ -8,7 +8,7 @@
         $('#new-task-modal-duration').val("0")
         $('#new-task-modal-duration-unit').val("0")
         $('#new-task-modal-users').val("0")
-        modal = $(this).attr('data-category')
+        modal = $(@).attr('data-category')
         undefined
 
     $("#new-task-modal-submit").on "click", ->
@@ -39,7 +39,7 @@
        containment: "parent",
        placeholder: "placeholder"
        stop: (e, ui) ->
-           console.log $(this).find('.task').attr("data-id")
+           console.log $(@).find('.task').attr("data-id")
     ).disableSelection()
     createTask = () ->
         $("div.panel[data-category='"+modal+"'] .panel-body")
