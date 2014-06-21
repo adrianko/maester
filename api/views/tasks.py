@@ -57,15 +57,15 @@ def setOrder(data):
         response = {"success": False, "request": data}
     else:
         order = loads(data.get("order"))
-        out = ""
-        for x in range(0, len(order)):
-            #update
-            try:
-                t = Task.objects.get(pk=int(order[x]))
-                t.order = (x+1)
-                t.save(update_fields=["order"])
-            except Task.DoesNotExist:
+        for category, list in order.iteritems():
+            for x in range(0, len(list)):
+                try:
+                    t = Task.objects.get(pk=int(list[x]))
+                    t.order = (x+1)
+                    t.category_id = int(category)
+                    t.save(update_fields=["order", "category_id"])
+                except Task.DoesNotExist:
+                    pass
                 pass
-            pass
         response = {"success": True}
     return response

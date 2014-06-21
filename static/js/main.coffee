@@ -1,6 +1,7 @@
 (($) ->
     component_stash = {}
     modal = ""
+    task_list_changed = []
     $("a.new-task").on "click", ->
         $("#new-task-modal-title").val("")
         $("#new-task-modal-desc").val("")
@@ -38,21 +39,30 @@
         undefined
 
     $(".task-list").sortable(
-       axis: "y",
-       containment: "parent",
-       placeholder: "placeholder"
-       stop: (e, ui) ->
-           $.ajax
-               type: "POST"
-               url: "/api/set/task/order"
-               data:
-                   order: JSON.stringify ($(t).attr("data-id") for t in $(@).parent().find(".task"))
-               success: (data) ->
-                   console.log data
-                   if data.code != 200
-                       console.log "Error: "+data.code
-               error: (jqXHR, textStatus, err) ->
-                   console.log err
+        connectWith: $(".task-list"),
+        placeholder: "placeholder"
+        change: ->
+            id = $(@).closest(".panel").attr("data-category")
+            if id not in task_list_changed
+                task_list_changed.push id
+            console.log task_list_changed
+        stop: (e, ui) ->
+            order = {}
+            for x in task_list_changed
+                order[x] = ($(t).attr("data-id") for t in $("div.panel[data-category='"+x+"']").find(".task"))
+            console.log order
+
+            $.ajax
+                type: "POST"
+                url: "/api/set/task/order"
+                data:
+                    order: JSON.stringify order
+                success: (data) ->
+                    console.log data
+                    if data.code != 200
+                        console.log "Error: "+data.code
+                error: (jqXHR, textStatus, err) ->
+                    console.log err
     ).disableSelection()
 
     createTask = (category_id, title) ->
