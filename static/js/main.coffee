@@ -31,7 +31,8 @@
                 console.log data
                 if component is 1
                     component_stash.task = data.data.components
-                createTask()
+                createTask(modal, $("#new-task-modal-title").val())
+                $("#new-task-modal").modal("hide")
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
@@ -47,16 +48,16 @@
                data:
                    order: JSON.stringify ($(t).attr("data-id") for t in $(@).parent().find(".task"))
                success: (data) ->
+                   console.log data
                    if data.code != 200
                        console.log "Error: "+data.code
                error: (jqXHR, textStatus, err) ->
                    console.log err
     ).disableSelection()
 
-    createTask = () ->
-        $("div.panel[data-category='"+modal+"'] .panel-body .task-list")
-            .append(component_stash.task.replace "{{ title }}", $("#new-task-modal-title").val())
-        $("#new-task-modal").modal("hide")
+    createTask = (category_id, title) ->
+        $("div.panel[data-category='"+category_id+"'] .panel-body .task-list")
+            .append(component_stash.task.replace "{{ title }}", title)
         null
 
     undefined

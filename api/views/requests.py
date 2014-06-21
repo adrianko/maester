@@ -102,8 +102,8 @@ def set(response, request, params):
                 response.setOk()
                 response.msg = "set delete task"
             elif action == "order":
-                response.setOk()
-                response.msg = "set task order"
+                response.data = tasks.setOrder(request.POST)
+                response.setOk() if response.data["success"] is True else response.setInvalid()
             else:
                 response.setInvalid()
         elif item == "user":

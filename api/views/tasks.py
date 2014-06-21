@@ -51,3 +51,21 @@ def create(data):
         if data["component"] == "1":
             response["components"] = components.task()
     return response
+
+def setOrder(data):
+    if data == {}:
+        response = {"success": False, "request": data}
+    else:
+        order = loads(data.get("order"))
+        out = ""
+        for x in range(0, len(order)):
+            #update
+            try:
+                t = Task.objects.get(pk=int(order[x]))
+                t.order = (x+1)
+                t.save()
+            except Task.DoesNotExist:
+                pass
+            pass
+        response = {"success": True}
+    return response
