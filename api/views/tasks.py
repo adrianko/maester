@@ -63,7 +63,7 @@ def setOrder(data):
             try:
                 t = Task.objects.get(pk=int(order[x]))
                 t.order = (x+1)
-                t.save()
+                t.save(update_fields=["order"])
             except Task.DoesNotExist:
                 pass
             pass
