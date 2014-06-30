@@ -3,7 +3,7 @@
     modal = ""
     task_list_changed = []
     task_open = ""
-    $("a.new-task").on "click", ->
+    $(document.body).on "click", "a.new-task", ->
         $("#new-task-modal-title").val("")
         $("#new-task-modal-desc").val("")
         $("#new-task-modal-duration").val("0")
@@ -12,7 +12,7 @@
         modal = $(@).attr("data-category")
         undefined
 
-    $("#new-task-modal-submit").on "click", ->
+    $(document.body).on "click", "#new-task-modal-submit", ->
         component = 0
         if "task" not of component_stash
             component = 1
@@ -66,7 +66,7 @@
                     console.log err
     ).disableSelection()
 
-    $(".task-remove").on "click", ->
+    $(document.body).on "click", ".task-remove", ->
         $("#task-details-modal").modal("hide")
         console.log task_open
         $(".task[data-id='"+task_open+"']").remove()
@@ -81,8 +81,9 @@
                 console.log err
         undefined
 
-    $(".task").on "click", ->
+    $(document.body).on "click", ".task", ->
         task_open = $(@).attr('data-id')
+        console.log task_open
         $.ajax
             type: "GET"
             url: "/api/get/task/"+task_open
@@ -93,10 +94,15 @@
                 else
                     $("#task-title").text(data.data[0].title)
                     $("#task-description").text(data.data[0].description)
-                    $("#task-duration").text(data.data[0].duration)
-                    $("#task-assignee").text("")
+                    duration = data.data[0].duration
+                    if duration >= 3600 and duration < 86400
+                        duration = (duration / 3600) + "hr"
+                    else if duration >= 86400 and duration < 604800
+                        duration = ((duration / 3600) / 24) + "dy"
+                    $("#task-duration").text(duration)
+                    $("#task-assignee ul.users").text("")
                     for u in data.data[0].users
-                        $("#task-assignee").append("<li>"+u.username+"</li>")
+                        $("#task-assignee ul.users").append("<li>"+u.username+"</li>")
                     $("#task-details-modal").modal("show")
         undefined
 
