@@ -69,7 +69,7 @@
     $(document.body).on "click", ".task-remove", ->
         $("#task-details-modal").modal("hide")
         console.log task_open
-        $(".task[data-id='"+task_open+"']").remove()
+        $(".task[data-id='"+task_open+"']").parent().remove()
         $.ajax
             type: "POST"
             url: "/api/set/task/delete"
