@@ -21,7 +21,7 @@ def create(data):
     if data == {}:
         response = {"success": False, "request": data}
     else:
-        duration_units = {"h" : 3600, "d": 3600*24, "w": 3600*24*7, "m": 3600*24*7*28}
+        duration_units = {"h" : 3600, "d": 3600*24, "w": 3600*24*7, "m": 3600*24*7*4}
         du = data.get("data[duration_unit]")
         duration = 0
         if du in duration_units:
