@@ -1,30 +1,14 @@
 {% extends "core/base.html" %}
 {% block content %}
-        <div class="container board">
-            <h1>{{ title }}</h1>
-            <p>{{ description }}</p>
-            {% for c in categories %}
-            <div class="panel panel-primary" data-category="{{ c.id }}">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{ c.title }}</h3>
-                </div>
-                <div class="panel-body">
-                    <ul class="task-list">
-                        {% for t in c.tasks %}
-                            {% with t.title as title %}
-                            {% with t.id as id %}
-                                {% include "components/task.html" %}
-                            {% endwith %}
-                            {% endwith %}
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="panel-footer">
-                    <a href="#" class="new-task" data-category="{{ c.id }}" data-toggle="modal" data-target="#new-task-modal">Add task</a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% include "modals/new-task.html" %}
-        {% include "modals/task-details.html" %}
+    <div class="container board">
+        <h1>{{ title }}</h1>
+        <a href="#" class="new-category" data-board-id="{{ id }}" data-toggle="modal" data-target="#new-category-modal">Add category</a>
+        <p>{{ description }}</p>
+        {% for c in categories %}
+            {% include "components/category.html" %}
+        {% endfor %}
+    </div>
+    {% include "modals/new-task.html" %}
+    {% include "modals/task-details.html" %}
+    {% include "modals/new-category.html" %}
 {% endblock %}

@@ -106,6 +106,9 @@
                     $("#task-details-modal").modal("show")
         undefined
 
+    $("#new-category-popover-add").on "click", ->
+        console.log $("#new-category-popover-title-in").val()
+
     createTask = (category_id, title, id) ->
         task = component_stash.task
         task = task.replace "{{ title }}", title
