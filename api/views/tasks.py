@@ -69,3 +69,23 @@ def setOrder(data):
                 pass
         response = {"success": True}
     return response
+
+def update(data):
+    if data == {}:
+        response = {"success": False, "request": data}
+    else:
+        response = {"success": True}
+    return response
+
+def remove(data):
+    if data == {}:
+        response = {"success": False, "request": data}
+    else:
+        id = data.get("id")
+        try:
+            t= Task.objects.get(pk=id)
+            t.delete()
+        except Task.DoesNotExist:
+            pass
+        response = {"success": True, "request": data}
+    return response

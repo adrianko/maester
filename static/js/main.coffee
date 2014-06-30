@@ -2,6 +2,7 @@
     component_stash = {}
     modal = ""
     task_list_changed = []
+    task_open = ""
     $("a.new-task").on "click", ->
         $("#new-task-modal-title").val("")
         $("#new-task-modal-desc").val("")
@@ -32,14 +33,14 @@
                 console.log data
                 if component is 1
                     component_stash.task = data.data.components
-                createTask(modal, $("#new-task-modal-title").val())
+                createTask(modal, $("#new-task-modal-title").val(), data.data.id)
                 $("#new-task-modal").modal("hide")
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
 
     $(".task-list").sortable(
-        connectWith: $(".task-list"),
+        connectWith: $(".task-list")
         placeholder: "placeholder"
         change: ->
             id = $(@).closest(".panel").attr("data-category")
@@ -65,9 +66,46 @@
                     console.log err
     ).disableSelection()
 
-    createTask = (category_id, title) ->
+    $(".task-remove").on "click", ->
+        $("#task-details-modal").modal("hide")
+        console.log task_open
+        $(".task[data-id='"+task_open+"']").remove()
+        $.ajax
+            type: "POST"
+            url: "/api/set/task/delete"
+            data:
+                id: task_open
+            success: (data) ->
+                console.log data
+            error: (jqXHR, textStatus, err) ->
+                console.log err
+        undefined
+
+    $(".task").on "click", ->
+        task_open = $(@).attr('data-id')
+        $.ajax
+            type: "GET"
+            url: "/api/get/task/"+task_open
+            success: (data) ->
+                console.log data
+                if data.code != 200
+                    console.log "ERROR: "+data.code
+                else
+                    $("#task-title").text(data.data[0].title)
+                    $("#task-description").text(data.data[0].description)
+                    $("#task-duration").text(data.data[0].duration)
+                    $("#task-assignee").text("")
+                    for u in data.data[0].users
+                        $("#task-assignee").append("<li>"+u.username+"</li>")
+                    $("#task-details-modal").modal("show")
+        undefined
+
+    createTask = (category_id, title, id) ->
+        task = component_stash.task
+        task = task.replace "{{ title }}", title
+        task = task.replace "{{ id }}", id
         $("div.panel[data-category='"+category_id+"'] .panel-body .task-list")
-            .append(component_stash.task.replace "{{ title }}", title)
+            .append(task)
         null
 
     undefined

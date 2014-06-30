@@ -1,64 +1,64 @@
 <div class="modal fade" id="new-task-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Add new task</h4>
-      </div>
-      <div class="modal-body">
-        <form role="form">
-            <div class="form-group">
-                <label for="new-task-modal-title">Title</label>
-                <input type="text" class="form-control" id="new-task-modal-title" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Add new task</h4>
             </div>
-            <div class="form-group">
-                <label for="new-task-modal-desc">Description</label>
-                <textarea class="form-control" rows="3" id="new-task-modal-desc"></textarea>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="new-task-modal-title">Title</label>
+                        <input type="text" class="form-control" id="new-task-modal-title" />
+                    </div>
+                    <div class="form-group">
+                        <label for="new-task-modal-desc">Description</label>
+                        <textarea class="form-control" rows="3" id="new-task-modal-desc"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-task-modal-duration">Duration</label>
+                        <br />
+                        <select class="form-control limit inline" id="new-task-modal-duration">
+                            <option value="0">---</option>
+                            <option value="0.5">0.5</option>
+                            <option value="1">1</option>
+                            <option value="1.5">1.5</option>
+                            <option value="2">2</option>
+                            <option value="2.5">2.5</option>
+                            <option value="3">3</option>
+                            <option value="3.5">3.5</option>
+                            <option value="4">4</option>
+                            <option value="4.5">4.5</option>
+                            <option value="5">5</option>
+                            <option value="5.5">5.5</option>
+                            <option value="6">6</option>
+                            <option value="6.5">6.5</option>
+                            <option value="7">7</option>
+                            <option value="7.5">7.5</option>
+                            <option value="8">8</option>
+                        </select>
+                        <select class="form-control limit inline" id="new-task-modal-duration-unit">
+                            <option value="0">---</option>
+                            <option value="h">hr</option>
+                            <option value="d">dy</option>
+                            <option value="w">wk</option>
+                            <option value="m">mo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-task-modal-users">Assignee</label>
+                        <select multiple class="form-control limit" id="new-task-modal-users">
+                            <option value="0">---</option>
+                            {% for x in users %}
+                            <option value="{{ x.id }}">{{ x.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="new-task-modal-duration">Duration</label>
-                <br />
-                <select class="form-control limit inline" id="new-task-modal-duration">
-                    <option value="0">---</option>
-                    <option value="0.5">0.5</option>
-                    <option value="1">1</option>
-                    <option value="1.5">1.5</option>
-                    <option value="2">2</option>
-                    <option value="2.5">2.5</option>
-                    <option value="3">3</option>
-                    <option value="3.5">3.5</option>
-                    <option value="4">4</option>
-                    <option value="4.5">4.5</option>
-                    <option value="5">5</option>
-                    <option value="5.5">5.5</option>
-                    <option value="6">6</option>
-                    <option value="6.5">6.5</option>
-                    <option value="7">7</option>
-                    <option value="7.5">7.5</option>
-                    <option value="8">8</option>
-                </select>
-                <select class="form-control limit inline" id="new-task-modal-duration-unit">
-                    <option value="0">---</option>
-                    <option value="h">hr</option>
-                    <option value="d">dy</option>
-                    <option value="w">wk</option>
-                    <option value="m">mo</option>
-                </select>
+            <div class="modal-footer">
+                <button id="new-task-modal-submit" type="button" class="btn btn-primary">Add</button>
             </div>
-            <div class="form-group">
-                <label for="new-task-modal-users">Assignee</label>
-                <select multiple class="form-control limit" id="new-task-modal-users">
-                    <option value="0">---</option>
-                {% for x in users %}
-                    <option value="{{ x.id }}">{{ x.username }}</option>
-                {% endfor %}
-                </select>
-            </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button id="new-task-modal-submit" type="button" class="btn btn-primary">Add</button>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
