@@ -7,3 +7,6 @@ def retrieve(filename):
 
 def task():
     return retrieve("task")
+
+def category():
+    return retrieve("category")

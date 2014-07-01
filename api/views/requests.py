@@ -83,6 +83,8 @@ def set(response, request, params):
             if action == "new":
                 response.setOk()
                 response.msg = "set new category"
+                response.data = categories.create(request.POST)
+                response.setOk() if response.data["success"] is True else response.setInvalid()
             elif action == "update":
                 response.setOk()
                 response.msg = "set update category"

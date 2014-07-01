@@ -113,8 +113,31 @@
         undefined
 
     $("#new-category-modal-submit").on "click", ->
-        console.log $("#new-category-modal-title").val()
-        $("#new-category-modal").modal("hide")
+        component = 0
+        if "category" not of component_stash
+            component = 1
+        title = $("#new-category-modal-title").val()
+        console.log title
+        $.ajax
+            type: "POST"
+            url: "/api/set/category/new"
+            data:
+                component: component
+                id: $(".new-category:first").attr("data-board-id")
+                title: title
+            success: (data) ->
+                console.log data
+                if component is 1
+                    component_stash.category = data.data.components
+                category = component_stash.category
+                category = category.split "{{ c.id }}"
+                category = category.join data.data.id
+                category = category.replace "{{ c.title }}", title
+                $("div.board").append(category)
+                $("#new-category-modal").modal("hide")
+            error: (jqXHR, textStatus, err) ->
+                console.log err
+        undefined
 
     createTask = (category_id, title, id) ->
         task = component_stash.task
