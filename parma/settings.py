@@ -51,9 +51,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'maester.urls'
+ROOT_URLCONF = 'parma.urls'
 
-WSGI_APPLICATION = 'maester.wsgi.application'
+WSGI_APPLICATION = 'parma.wsgi.application'
 
 
 # Database
