@@ -69,8 +69,8 @@ def set(response, request, params):
         action = params[4]
         if item == "board":
             if action == "new":
-                response.setOk()
-                response.msg = "set new board"
+                response.data = boards.create(request.POST)
+                response.setOk() if response.data["success"] is True else response.setInvalid()
             elif action == "update":
                 response.setOk()
                 response.msg = "set update board"
@@ -81,8 +81,6 @@ def set(response, request, params):
                 response.setInvalid()
         elif item == "category":
             if action == "new":
-                response.setOk()
-                response.msg = "set new category"
                 response.data = categories.create(request.POST)
                 response.setOk() if response.data["success"] is True else response.setInvalid()
             elif action == "update":

@@ -23,6 +23,9 @@ def create(data):
             board=Board.objects.get(pk=data.get("id"))
         ).aggregate(Max('order'))['order__max']
 
+        if max_order is None:
+            max_order = 0
+        
         c = Category(
             title=data.get("title"),
             description="",

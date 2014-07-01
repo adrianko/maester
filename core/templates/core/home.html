@@ -1,13 +1,15 @@
 {% extends "core/base.html" %}
 {% block content %}
-        <div class="container">
-            <h1>Boards</h1>
-            <ul class="list-group" style="width:200px;">
-            {% for b in boards %}
-                <li class="list-group-item">
-                    <a href="/board/{{ b.id }}">{{ b.title }}</a>
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
+    <div class="container">
+        <h1>Boards</h1>
+        <ul class="list-group boards" style="width:200px;">
+        {% for b in boards %}
+            <li class="list-group-item">
+                <a href="/board/{{ b.id }}">{{ b.title }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+        <a href="#" class="new-board" data-toggle="modal" data-target="#new-board-modal">Add board</a>
+    </div>
+    {% include "modals/new-board.html" %}
 {% endblock %}
