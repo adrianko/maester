@@ -100,11 +100,11 @@
                     else if duration >= 1800 and duration < 86400
                         duration = (duration / 3600) + "hr"
                     else if duration >= 86400 and duration < 604800
-                        duration = ((duration / 3600) / 24) + "dy"
+                        duration = (duration / 86400) + "dy"
                     else if duration >= 604800 and duration < 2419200
-                        duration = (((duration / 3600) / 24) / 7) + "wk"
+                        duration = (duration / 604800) + "wk"
                     else
-                        duration = ((((duration / 3600) / 24 ) / 7) / 4) + "mo"
+                        duration = (duration / 2419200) + "mo"
                     $("#task-duration").text(duration)
                     $("#task-assignee ul.users").text("")
                     for u in data.data[0].users
