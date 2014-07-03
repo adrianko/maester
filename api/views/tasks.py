@@ -66,7 +66,6 @@ def setOrder(data):
                     t.save(update_fields=["order", "category_id"])
                 except Task.DoesNotExist:
                     pass
-                pass
         response = {"success": True}
     return response
 
