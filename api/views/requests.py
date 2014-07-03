@@ -89,6 +89,9 @@ def set(response, request, params):
             elif action == "delete":
                 response.setOk()
                 response.msg = "set delete category"
+            elif action == "order":
+                response.data = categories.setOrder(request.POST)
+                response.setOk() if response.data["success"] is True else response.setInvalid()
             else:
                 response.setInvalid()
         elif item == "task":

@@ -4,10 +4,12 @@
         <h1>{{ title }}</h1>
         <a href="#" class="new-category" data-board-id="{{ id }}" data-toggle="modal" data-target="#new-category-modal">Add category</a>
         <p>{{ description }}</p>
+        <div class="categories" data-board-id="{{ id }}">
         {% for c in categories %}
-            <div class="panel panel-primary" data-category="{{ c.id }}">
+            <div class="panel panel-primary category" data-category="{{ c.id }}">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ c.title }}</h3>
+                    <div class="glyphicon glyphicon-resize-horizontal reorder"></div>
                 </div>
                 <div class="panel-body">
                     <ul class="task-list">
@@ -25,6 +27,7 @@
                 </div>
             </div>
         {% endfor %}
+        </div>
     </div>
     {% include "modals/new-task.html" %}
     {% include "modals/task-details.html" %}

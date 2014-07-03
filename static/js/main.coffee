@@ -45,7 +45,7 @@
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
-    sortable = () ->
+    taskSortable = () ->
         $(".task-list").sortable(
             connectWith: $(".task-list")
             placeholder: "placeholder"
@@ -69,7 +69,27 @@
                         console.log err
         ).disableSelection()
         undefined
-    sortable()
+    taskSortable()
+
+    $(".categories").sortable(
+        handle: ".reorder"
+        placeholder: "placeholder-category"
+        stop: (e, ui) ->
+            console.log $(".categories").eq(0).attr("data-board-id")
+            $.ajax
+                type: "POST"
+                url: "/api/set/category/order"
+                data:
+                    id: $(".categories").eq(0).attr("data-board-id")
+                    order: JSON.stringify ($(c).attr("data-category") for c in $("div.categories").find(".category"))
+                success: (data)->
+                    if data.code != 200
+                        console.log "ERROR: "+data.code
+                    console.log data
+                error: (jqXHR, textStatus, err) ->
+                    console.log err
+    ).disableSelection()
+
 
     $(document.body).on "click", ".task-remove", ->
         $("#task-details-modal").modal("hide")
@@ -136,9 +156,9 @@
                 category = category.split "{{ c.id }}"
                 category = category.join data.data.id
                 category = category.replace "{{ c.title }}", title
-                $("div.board").append(category)
+                $("div.categories").append(category)
                 $("#new-category-modal").modal("hide")
-                sortable()
+                taskSortable()
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
