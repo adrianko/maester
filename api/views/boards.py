@@ -39,10 +39,17 @@ def remove(data):
             b = Board.objects.get(pk=id)
             cs = Category.objects.filter(board_id=b)
             for c in cs:
-                t = Task.objects.filter(category_id=c).delete()
+                Task.objects.filter(category_id=c).delete()
                 c.delete()
             b.delete()
         except Board.DoesNotExist:
             pass
         response = {"success": True}
+    return response
+
+def update(data):
+    if data == {}:
+        response = {"success": False, "request": data}
+    else:
+        response = {"success": True, "request": data}
     return response

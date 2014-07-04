@@ -4,6 +4,7 @@
     task_list_changed = []
     task_open = ""
     home_board = ""
+    del_category = ""
 
     taskSortable = () ->
         $(".task-list").sortable(
@@ -208,12 +209,40 @@
             success: (data) ->
                 if data.code != 200
                     console.log "ERROR: "+data.code
+                $("ul.boards li[data-board='"+home_board+"']").remove()
+                $("#delete-board-modal").modal("hide")
                 home_board = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
-        $("ul.boards li[data-board='"+home_board+"']").remove()
-        $("#delete-board-modal").modal("hide")
-        home_board = ""
+        undefined
+
+    $(document.body).on "click", ".category-edit", ->
+        undefined
+
+    $(document.body).on "click", ".category-delete", ->
+        del_category = $(@).closest(".panel").attr("data-category")
+        $("#delete-category-modal").modal("show")
+        undefined
+
+    $(document.body).on "click", "#delete-category-yes", ->
+        $.ajax
+            type: "POST"
+            url: "/api/set/category/delete"
+            data:
+                id: del_category
+            success: (data) ->
+                if data.code != 200
+                    console.log "ERROR: "+data.code
+                $("div.categories div.panel[data-category='"+del_category+"']").remove()
+                $("#delete-category-modal").modal("hide")
+                del_category = ""
+            error: (jqXHR, textStatus, err) ->
+                console.log err
+
+        undefined
+
+    $(document.body).on "click", "#delete-category-no", ->
+        $("#delete-category-modal").modal("hide")
         undefined
 
     $(".categories").sortable(

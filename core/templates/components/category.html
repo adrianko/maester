@@ -2,6 +2,13 @@
     <div class="panel-heading">
         <h3 class="panel-title">{{ c.title }}</h3>
         <div class="glyphicon glyphicon-resize-horizontal reorder"></div>
+        <div class="dropdown pull-right">
+            <a href="#" class="dropdown-toggle category-dd" data-toggle="dropdown"><b class="caret"></b></a>
+            <ul class="dropdown-menu category-dd-menu" role="menu">
+                <li><a class="category-edit" href="#">Edit</a></li>
+                <li><a class="category-delete" href="#">Delete</a></li>
+            </ul>
+        </div>
     </div>
     <div class="panel-body">
         <ul class="task-list">

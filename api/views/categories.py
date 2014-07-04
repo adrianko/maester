@@ -55,3 +55,24 @@ def setOrder(data):
                 pass
         response = {"success": True, "request": data}
     return response
+
+def remove(data):
+    if data == {}:
+        response = {"success": False, "request": data}
+    else:
+        id = data.get("id")
+        try:
+            c = Category.objects.get(pk=id)
+            Task.objects.filter(category_id=c).delete()
+            c.delete()
+        except Category.DoesNotExist:
+            pass
+        response = {"success": True}
+    return response
+
+def update(data):
+    if data == {}:
+        response = {"success": False, "request": data}
+    else:
+        response = {"success": True, "request": data}
+    return response
