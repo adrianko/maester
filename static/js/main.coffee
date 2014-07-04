@@ -1,6 +1,6 @@
 (($) ->
     component_stash = {}
-    modal = ""
+    new_task_category = ""
     task_list_changed = []
     task_open = ""
     home_board = ""
@@ -39,7 +39,7 @@
         $("#new-task-modal-duration").val("0")
         $("#new-task-modal-duration-unit").val("0")
         $("#new-task-modal-user").val("0")
-        modal = $(@).attr("data-category")
+        new_task_category = $(@).attr("data-category")
         undefined
 
     $(document.body).on "click", "a.new-category", ->
@@ -61,8 +61,8 @@
                 component: component
                 data:
                     title: $("#new-task-modal-title").val()
-                    category: modal
-                    order: ($(".panel[data-category='"+modal+"'] .panel-body .well").length + 1)
+                    category: new_task_category
+                    order: ($(".panel[data-category='"+new_task_category+"'] .panel-body .well").length + 1)
                     desc: $("#new-task-modal-desc").val()
                     duration: $("#new-task-modal-duration").val()
                     duration_unit: $("#new-task-modal-duration-unit").val()
@@ -73,7 +73,7 @@
                 task = component_stash.task
                 task = task.replace "{{ title }}", $("#new-task-modal-title").val()
                 task = task.replace "{{ id }}", data.data.id
-                $("div.panel[data-category='"+modal+"'] .panel-body .task-list")
+                $("div.panel[data-category='"+new_task_category+"'] .panel-body .task-list")
                     .append(task)
                 $("#new-task-modal").modal("hide")
             error: (jqXHR, textStatus, err) ->
