@@ -6,6 +6,7 @@
     home_board = ""
     del_category = ""
     board_id = ""
+    edit_category = ""
 
     taskSortable = () ->
         $(".task-list").sortable(
@@ -239,6 +240,30 @@
         undefined
 
     $(document.body).on "click", ".category-edit", ->
+        edit_category = $(@).closest(".panel").attr("data-category")
+        $("#edit-category-modal-title").val($(@).closest(".panel-heading").children(".panel-title").text())
+        $("#edit-category-modal").modal("show")
+        undefined
+
+    $(document.body).on "click", "#edit-category-modal-submit", ->
+        title = $("#edit-category-modal-title").val()
+        $.ajax
+            type: "POST"
+            url: "/api/set/category/update"
+            data:
+                id: edit_category
+                title: title
+            success: (data) ->
+                console.log data
+                if data.code != 200
+                    console.log "ERROR: "+data.code
+                $(".panel[data-category='"+edit_category+"'] .panel-heading .panel-title").text(title)
+                $("#edit-category-modal").modal("hide")
+                edit_category = ""
+            error: (jqXHR, textStatus, err) ->
+                console.log err
+
+
         undefined
 
     $(document.body).on "click", ".category-delete", ->

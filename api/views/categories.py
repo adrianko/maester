@@ -74,5 +74,13 @@ def update(data):
     if data == {}:
         response = {"success": False, "request": data}
     else:
+        id = data.get("id")
+        title = data.get("title")
+        try:
+            c = Category.objects.get(pk=id)
+            c.title = title
+            c.save(update_fields=["title"])
+        except Category.DoesNotExist:
+            pass
         response = {"success": True, "request": data}
     return response
