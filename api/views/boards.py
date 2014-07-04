@@ -1,4 +1,5 @@
 from api.models import *
+import components
 
 def get(response, id):
     try:
@@ -23,5 +24,25 @@ def create(data):
             description=""
         )
         b.save()
+
         response = {"success": True, "request": data, "id": b.fetch()["id"]}
+        if data["component"] == "1":
+            response["components"] = components.boarditem()
+    return response
+
+def remove(data):
+    if data == {}:
+        response = {"success": False, "request": data}
+    else:
+        id = data.get("id")
+        try:
+            b = Board.objects.get(pk=id)
+            cs = Category.objects.filter(board_id=b)
+            for c in cs:
+                t = Task.objects.filter(category_id=c).delete()
+                c.delete()
+            b.delete()
+        except Board.DoesNotExist:
+            pass
+        response = {"success": True}
     return response

@@ -82,7 +82,7 @@ def remove(data):
     else:
         id = data.get("id")
         try:
-            t= Task.objects.get(pk=id)
+            t = Task.objects.get(pk=id)
             t.delete()
         except Task.DoesNotExist:
             pass

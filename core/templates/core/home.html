@@ -2,14 +2,15 @@
 {% block content %}
     <div class="container">
         <h1>Boards</h1>
-        <ul class="list-group boards" style="width:200px;">
+        <ul class="boards">
         {% for b in boards %}
-            <li class="list-group-item">
-                <a href="/board/{{ b.id }}">{{ b.title }}</a>
-            </li>
+            {% with b.title as title %}
+            {% with b.id as id %}
+                {% include "components/board-item.html" %}
+            {% endwith %}
+            {% endwith %}
         {% endfor %}
         </ul>
-        <a href="#" class="new-board" data-toggle="modal" data-target="#new-board-modal">Add board</a>
-    </div>
     {% include "modals/new-board.html" %}
+    {% include "popups/delete-board.html" %}
 {% endblock %}

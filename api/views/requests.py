@@ -67,48 +67,32 @@ def set(response, request, params):
     if len(params) >= 5:
         item = params[3]
         action = params[4]
+        response.data = {"success": False}
         if item == "board":
             if action == "new":
                 response.data = boards.create(request.POST)
-                response.setOk() if response.data["success"] is True else response.setInvalid()
             elif action == "update":
-                response.setOk()
-                response.msg = "set update board"
+                response.data = boards.update(request.POST)
             elif action == "delete":
-                response.setOk()
-                response.msg = "set delete board"
-            else:
-                response.setInvalid()
+                response.data = boards.remove(request.POST)
         elif item == "category":
             if action == "new":
                 response.data = categories.create(request.POST)
-                response.setOk() if response.data["success"] is True else response.setInvalid()
             elif action == "update":
-                response.setOk()
-                response.msg = "set update category"
+                response.data = categories.update(request.POST)
             elif action == "delete":
-                response.setOk()
-                response.msg = "set delete category"
+                response.data = categories.remove(request.POST)
             elif action == "order":
                 response.data = categories.setOrder(request.POST)
-                response.setOk() if response.data["success"] is True else response.setInvalid()
-            else:
-                response.setInvalid()
         elif item == "task":
             if action == "new":
                 response.data = tasks.create(request.POST)
-                response.setOk() if response.data["success"] is True else response.setInvalid()
             elif action == "update":
-                response.setOk()
-                response.msg = "set update task"
+                response.data = tasks.update(request.POST)
             elif action == "delete":
                 response.data = tasks.remove(request.POST)
-                response.setOk() if response.data["success"] is True else response.setInvalid()
             elif action == "order":
                 response.data = tasks.setOrder(request.POST)
-                response.setOk() if response.data["success"] is True else response.setInvalid()
-            else:
-                response.setInvalid()
         elif item == "user":
             if action == "new":
                 response.setOk()
@@ -119,10 +103,7 @@ def set(response, request, params):
             elif action == "delete":
                 response.setOk()
                 response.msg = "set delete user"
-            else:
-                response.setInvalid()
-        else:
-            response.setInvalid()
+        response.setOk() if response.data["success"] is True else response.setInvalid()
     else:
         response.setMoreInfo()
     return response

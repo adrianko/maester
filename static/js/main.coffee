@@ -3,6 +3,43 @@
     modal = ""
     task_list_changed = []
     task_open = ""
+    home_board = ""
+
+    taskSortable = () ->
+        $(".task-list").sortable(
+            connectWith: $(".task-list")
+            placeholder: "placeholder"
+            change: ->
+                id = $(@).closest(".panel").attr("data-category")
+                if id not in task_list_changed
+                    task_list_changed.push id
+            stop: (e, ui) ->
+                order = {}
+                for x in task_list_changed
+                    order[x] = ($(t).attr("data-id") for t in $("div.panel[data-category='"+x+"']").find(".task"))
+                $.ajax
+                    type: "POST"
+                    url: "/api/set/task/order"
+                    data:
+                        order: JSON.stringify order
+                    success: (data) ->
+                        if data.code != 200
+                            console.log "ERROR: "+data.code
+                    error: (jqXHR, textStatus, err) ->
+                        console.log err
+        ).disableSelection()
+        null
+
+    createTask = (category_id, title, id) ->
+        task = component_stash.task
+        task = task.replace "{{ title }}", title
+        task = task.replace "{{ id }}", id
+        $("div.panel[data-category='"+category_id+"'] .panel-body .task-list")
+            .append(task)
+        null
+
+    taskSortable()
+
     $(document.body).on "click", "a.new-task", ->
         $("#new-task-modal-title").val("")
         $("#new-task-modal-desc").val("")
@@ -45,51 +82,6 @@
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
-    taskSortable = () ->
-        $(".task-list").sortable(
-            connectWith: $(".task-list")
-            placeholder: "placeholder"
-            change: ->
-                id = $(@).closest(".panel").attr("data-category")
-                if id not in task_list_changed
-                    task_list_changed.push id
-            stop: (e, ui) ->
-                order = {}
-                for x in task_list_changed
-                    order[x] = ($(t).attr("data-id") for t in $("div.panel[data-category='"+x+"']").find(".task"))
-                $.ajax
-                    type: "POST"
-                    url: "/api/set/task/order"
-                    data:
-                        order: JSON.stringify order
-                    success: (data) ->
-                        if data.code != 200
-                            console.log "ERROR: "+data.code
-                    error: (jqXHR, textStatus, err) ->
-                        console.log err
-        ).disableSelection()
-        undefined
-    taskSortable()
-
-    $(".categories").sortable(
-        handle: ".reorder"
-        placeholder: "placeholder-category"
-        stop: (e, ui) ->
-            console.log $(".categories").eq(0).attr("data-board-id")
-            $.ajax
-                type: "POST"
-                url: "/api/set/category/order"
-                data:
-                    id: $(".categories").eq(0).attr("data-board-id")
-                    order: JSON.stringify ($(c).attr("data-category") for c in $("div.categories").find(".category"))
-                success: (data)->
-                    if data.code != 200
-                        console.log "ERROR: "+data.code
-                    console.log data
-                error: (jqXHR, textStatus, err) ->
-                    console.log err
-    ).disableSelection()
-
 
     $(document.body).on "click", ".task-remove", ->
         $("#task-details-modal").modal("hide")
@@ -135,7 +127,7 @@
                     $("#task-details-modal").modal("show")
         undefined
 
-    $("#new-category-modal-submit").on "click", ->
+    $(document.body).on "click", "#new-category-modal-submit", ->
         component = 0
         if "category" not of component_stash
             component = 1
@@ -163,28 +155,85 @@
                 console.log err
         undefined
 
-    $("#new-board-modal-submit").on "click", ->
+    $(document.body).on "click", "#new-board-modal-submit", ->
+        component = 0
+        if "boarditem" not of component_stash
+            component = 1
         title = $("#new-board-modal-title").val()
         $("#new-board-modal").modal("hide")
         $.ajax
             type: "POST"
             url: "/api/set/board/new"
             data:
+                component: component
                 title: title
+            success: (data) ->
+                console.log data
+                if data.code != 200
+                    console.log "ERROR: "+data.code
+                if component is 1
+                    component_stash.boarditem = data.data.components
+                board = component_stash.boarditem
+                board = board.split "{{ id }}"
+                board = board.join data.data.id
+                board = board.replace "{{ title }}", title
+                $(".boards").eq(0).append(board)
+                $("#new-board-modal").modal("hide")
+            error: (jqXHR, textStatus, err) ->
+                console.log err
+        undefined
+
+    $(document.body).on "click", ".board-link", ->
+        window.location.href = $(@).attr("data-href")
+        undefined
+
+    $(document.body).on "click", ".board-edit", ->
+        undefined
+
+    $(document.body).on "click", ".board-delete", ->
+        home_board = $(@).attr("data-id")
+        $("#delete-board-modal").modal('show')
+        undefined
+
+    $(document.body).on "click", "#delete-board-no", ->
+        $("#delete-board-modal").modal('hide')
+        undefined
+
+    $(document.body).on "click", "#delete-board-yes", ->
+        $.ajax
+            type: "POST"
+            url: "/api/set/board/delete"
+            data:
+                id: home_board
             success: (data) ->
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $(".boards:first").append("<li class=\"list-group-item\"><a href=\"/board/"+data.data.id+"\">"+title+"</a></li>")
+                home_board = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
+        $("ul.boards li[data-board='"+home_board+"']").remove()
+        $("#delete-board-modal").modal("hide")
+        home_board = ""
+        undefined
 
-    createTask = (category_id, title, id) ->
-        task = component_stash.task
-        task = task.replace "{{ title }}", title
-        task = task.replace "{{ id }}", id
-        $("div.panel[data-category='"+category_id+"'] .panel-body .task-list")
-            .append(task)
-        null
+    $(".categories").sortable(
+        handle: ".reorder"
+        placeholder: "placeholder-category"
+        stop: (e, ui) ->
+            console.log $(".categories").eq(0).attr("data-board-id")
+            $.ajax
+                type: "POST"
+                url: "/api/set/category/order"
+                data:
+                    id: $(".categories").eq(0).attr("data-board-id")
+                    order: JSON.stringify ($(c).attr("data-category") for c in $("div.categories").find(".category"))
+                success: (data)->
+                    if data.code != 200
+                        console.log "ERROR: "+data.code
+                    console.log data
+                error: (jqXHR, textStatus, err) ->
+                    console.log err
+    ).disableSelection()
 
     undefined
 ) jQuery

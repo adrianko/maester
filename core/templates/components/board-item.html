@@ -1,0 +1,15 @@
+<li data-board="{{ id }}">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default board-link" data-href="/board/{{ id }}">{{ title }}</button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu" style="width: 100%;">
+            <li><a href="#" class="board-edit" data-id="{{ id }}">Edit</a>
+            </li>
+            <li><a href="#" class="board-delete" data-id="{{ id }}">Delete</a>
+            </li>
+        </ul>
+    </div>
+</li>
