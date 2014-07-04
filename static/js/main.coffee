@@ -5,6 +5,7 @@
     task_open = ""
     home_board = ""
     del_category = ""
+    board_id = ""
 
     taskSortable = () ->
         $(".task-list").sortable(
@@ -104,9 +105,10 @@
                 if data.code != 200
                     console.log "ERROR: "+data.code
                 else
-                    $("#task-title").text(data.data[0].title)
-                    $("#task-description").text(data.data[0].description)
-                    duration = data.data[0].duration
+                    data = data.data[0]
+                    $("#task-title").text(data.title)
+                    $("#task-description").text(data.description)
+                    duration = data.duration
                     if duration < 1800
                         duration = ""
                     else if duration >= 1800 and duration < 86400
@@ -119,8 +121,10 @@
                         duration = (duration / 2419200) + "mo"
                     $("#task-duration").text(duration)
                     $("#task-assignee ul.users").text("")
-                    for u in data.data[0].users
+                    for u in data.users
                         $("#task-assignee ul.users").append("<li>"+u.username+"</li>")
+                    $("#task-title").editable()
+                    $("#task-description").editable()
                     $("#task-details-modal").modal("show")
         undefined
 
@@ -185,6 +189,28 @@
         undefined
 
     $(document.body).on "click", ".board-edit", ->
+        board_id = $(@).parent().parent().closest("li").attr("data-board")
+        $("#edit-board-modal-title").val($(@).closest(".btn-group").find(".board-link").eq(0).text())
+        $("#edit-board-modal").modal("show")
+        undefined
+
+    $(document.body).on "click", "#edit-board-modal-submit", ->
+        title = $("#edit-board-modal-title").val()
+        $.ajax
+            type: "POST"
+            url: "/api/set/board/update"
+            data:
+                id: board_id
+                title: title
+            success: (data) ->
+                console.log data
+                if data.code != 200
+                    console.log "ERROR: "+data.code
+                $("ul.boards li[data-board='"+board_id+"'] .btn-group .board-link").text(title)
+                $("#edit-board-modal").modal("hide")
+                board_id = ""
+            error: (jqXHR, textStatus, err) ->
+                console.log err
         undefined
 
     $(document.body).on "click", ".board-delete", ->

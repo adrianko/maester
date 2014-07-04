@@ -51,5 +51,13 @@ def update(data):
     if data == {}:
         response = {"success": False, "request": data}
     else:
+        id = data.get("id")
+        title = data.get("title")
+        try:
+            b = Board.objects.get(pk=id)
+            b.title = title
+            b.save(update_fields=["title"])
+        except Board.DoesNotExist:
+            pass
         response = {"success": True, "request": data}
     return response
