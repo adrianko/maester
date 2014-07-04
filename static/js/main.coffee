@@ -31,14 +31,6 @@
         ).disableSelection()
         null
 
-    createTask = (category_id, title, id) ->
-        task = component_stash.task
-        task = task.replace "{{ title }}", title
-        task = task.replace "{{ id }}", id
-        $("div.panel[data-category='"+category_id+"'] .panel-body .task-list")
-            .append(task)
-        null
-
     taskSortable()
 
     $(document.body).on "click", "a.new-task", ->
@@ -78,7 +70,11 @@
             success: (data) ->
                 if component is 1
                     component_stash.task = data.data.components
-                createTask(modal, $("#new-task-modal-title").val(), data.data.id)
+                task = component_stash.task
+                task = task.replace "{{ title }}", $("#new-task-modal-title").val()
+                task = task.replace "{{ id }}", data.data.id
+                $("div.panel[data-category='"+modal+"'] .panel-body .task-list")
+                    .append(task)
                 $("#new-task-modal").modal("hide")
             error: (jqXHR, textStatus, err) ->
                 console.log err
