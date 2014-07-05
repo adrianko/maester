@@ -7,19 +7,20 @@
     del_category = ""
     board_id = ""
     edit_category = ""
+    edit_item = ""
 
     taskSortable = () ->
         $(".task-list").sortable(
             connectWith: $(".task-list")
             placeholder: "placeholder"
             change: ->
-                id = $(@).closest(".panel").attr("data-category")
+                id = $(@).closest(".panel").attr "data-category"
                 if id not in task_list_changed
                     task_list_changed.push id
             stop: (e, ui) ->
                 order = {}
                 for x in task_list_changed
-                    order[x] = ($(t).attr("data-id") for t in $("div.panel[data-category='"+x+"']").find(".task"))
+                    order[x] = ($(t).attr("data-task") for t in $("div.panel[data-category='"+x+"']").find(".task"))
                 $.ajax
                     type: "POST"
                     url: "/api/set/task/order"
@@ -41,7 +42,7 @@
         $("#new-task-modal-duration").val("0")
         $("#new-task-modal-duration-unit").val("0")
         $("#new-task-modal-user").val("0")
-        new_task_category = $(@).attr("data-category")
+        new_task_category = $(@).attr "data-category"
         undefined
 
     $(document.body).on "click", "a.new-category", ->
@@ -84,7 +85,7 @@
 
     $(document.body).on "click", ".task-remove", ->
         $("#task-details-modal").modal("hide")
-        $(".task[data-id='"+task_open+"']").parent().remove()
+        $(".task[data-task='"+task_open+"']").parent().remove()
         $.ajax
             type: "POST"
             url: "/api/set/task/delete"
@@ -98,7 +99,7 @@
         undefined
 
     $(document.body).on "click", ".task", ->
-        task_open = $(@).attr('data-id')
+        task_open = $(@).attr('data-task')
         $.ajax
             type: "GET"
             url: "/api/get/task/"+task_open
@@ -124,8 +125,8 @@
                     $("#task-assignee ul.users").text("")
                     for u in data.users
                         $("#task-assignee ul.users").append("<li>"+u.username+"</li>")
-                    $("#task-title").editable()
-                    $("#task-description").editable()
+                    $(".task-detail-field").editable()
+                    $(".task-detail-field").off("click")
                     $("#task-details-modal").modal("show")
         undefined
 
@@ -139,7 +140,7 @@
             url: "/api/set/category/new"
             data:
                 component: component
-                id: $(".new-category:first").attr("data-board-id")
+                id: $(".new-category:first").attr("data-board")
                 title: title
             success: (data) ->
                 if data.code != 200
@@ -215,7 +216,7 @@
         undefined
 
     $(document.body).on "click", ".board-delete", ->
-        home_board = $(@).attr("data-id")
+        home_board = $(@).attr("data-task")
         $("#delete-board-modal").modal('show')
         undefined
 
@@ -257,7 +258,7 @@
                 console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $(".panel[data-category='"+edit_category+"'] .panel-heading .panel-title").text(title)
+                $(".panel[data-category='"+edit_category +"'] .panel-heading .panel-title").text(title)
                 $("#edit-category-modal").modal("hide")
                 edit_category = ""
             error: (jqXHR, textStatus, err) ->
@@ -292,16 +293,45 @@
         $("#delete-category-modal").modal("hide")
         undefined
 
+    $(".task-detail-container").hover(
+        -> $(@).children(".edit-item").css "display", "inline-block"
+        -> $(@).children(".edit-item").css "display", "none"
+    )
+
+    $(document.body).on "click", ".edit-item", (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+        $(@).parent().find(".editable").editable "toggle"
+        edit_item = $(@).attr("data-item")
+        undefined
+
+    $(document.body).on "click", ".editable-submit", (e) ->
+        value = $(".editable-input .form-control").val()
+        $.ajax
+            type: "POST"
+            url: "/api/set/task/update"
+            data:
+                id: task_open
+                field: edit_item
+                value: value
+            success: (data) ->
+                console.log data
+                if edit_item = "title"
+                    $(".task[data-task='"+task_open+"']").text value
+            error: (jqXHR, textStatus, err) ->
+                console.log err
+        undefined
+
     $(".categories").sortable(
         handle: ".reorder"
         placeholder: "placeholder-category"
         stop: (e, ui) ->
-            console.log $(".categories").eq(0).attr("data-board-id")
+            console.log $(".categories").eq(0).attr "data-board"
             $.ajax
                 type: "POST"
                 url: "/api/set/category/order"
                 data:
-                    id: $(".categories").eq(0).attr("data-board-id")
+                    id: $(".categories").eq(0).attr("data-board")
                     order: JSON.stringify ($(c).attr("data-category") for c in $("div.categories").find(".category"))
                 success: (data)->
                     if data.code != 200

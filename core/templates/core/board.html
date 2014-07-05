@@ -2,9 +2,9 @@
 {% block content %}
     <div class="container board">
         <h1>{{ title }}</h1>
-        <a href="#" class="new-category" data-board-id="{{ id }}" data-toggle="modal" data-target="#new-category-modal">Add category</a>
+        <a href="#" class="new-category" data-board="{{ id }}" data-toggle="modal" data-target="#new-category-modal">Add category</a>
         <p>{{ description }}</p>
-        <div class="categories" data-board-id="{{ id }}">
+        <div class="categories" data-board="{{ id }}">
         {% for c in categories %}
             <div class="panel panel-primary category" data-category="{{ c.id }}">
                 <div class="panel-heading">

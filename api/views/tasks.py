@@ -73,6 +73,25 @@ def update(data):
     if data == {}:
         response = {"success": False, "request": data}
     else:
+        id = data.get("id")
+        field = data.get("field")
+        value = data.get("value")
+        try:
+            t = Task.objects.get(pk=id)
+            if field == "title":
+                t.title = value
+            elif field == "description":
+                t.description = value
+            elif field == "duration":
+                duration_units = {"h" : 3600, "d": 3600*24, "w": 3600*24*7, "m": 3600*24*7*4}
+                d = data.get("value")
+                duration, du = d[:-1], d[-1]
+                if du in duration_units:
+                    duration = float(duration)*duration_units[du]
+                t.duration = duration
+            t.save()
+        except Task.DoesNotExist:
+            pass
         response = {"success": True}
     return response
 

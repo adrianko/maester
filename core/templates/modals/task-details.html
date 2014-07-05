@@ -3,22 +3,29 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="task-title"></h4>
+                <div class="task-detail-container">
+                    <h4 class="modal-title task-detail-field" id="task-title" data-type="text" data-mode="inline"></h4>
+                    <div class="glyphicon glyphicon-edit edit-item" data-item="title"></div>
+                </div>
             </div>
             <div class="modal-body">
-                <strong>Description:</strong>
-                <br />
-                <div class="task-detail-modal-data" id="task-description"></div>
-                <br />
-                <strong>Duration:</strong>
-                <br />
-                <div class="task-detail-modal-data" id="task-duration"></div>
-                <br />
-                <strong>Assignee:</strong>
-                <br />
-                <div id="task-assignee">
-                    <ul class="users">
-                    </ul>
+                <div class="task-detail-container">
+                    <strong>Description:</strong> <div class="glyphicon glyphicon-edit edit-item" data-item="description"></div>
+                    <br />
+                    <div class="task-detail-modal-data task-detail-field" id="task-description" data-type="textarea" data-mode="inline"></div>
+                </div>
+                <div class="task-detail-container">
+                    <strong>Duration:</strong> <div class="glyphicon glyphicon-edit edit-item" data-item="duration"></div>
+                    <br />
+                    <div class="task-detail-modal-data task-detail-field" id="task-duration" data-type="select"></div>
+                </div>
+                <div class="task-detail-container">
+                    <strong>Assignee:</strong> <div class="glyphicon glyphicon-edit edit-item" data-item="users"></div>
+                    <br />
+                    <div id="task-assignee">
+                        <ul class="users">
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
