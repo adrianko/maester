@@ -47,12 +47,11 @@
                     </div>
                     <div class="form-group">
                         <label for="new-task-modal-users">Assignee</label>
-                        <select multiple class="form-control limit" id="new-task-modal-users">
-                            <option value="0">---</option>
+                        <div id="new-task-modal-users">
                             {% for x in users %}
-                            <option value="{{ x.id }}">{{ x.username }}</option>
+                            <div data-user="{{ x.id }}" class="selectable-user">{{ x.username }}</div>
                             {% endfor %}
-                        </select>
+                        </div>
                     </div>
                 </form>
             </div>

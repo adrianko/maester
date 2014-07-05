@@ -89,6 +89,8 @@ def update(data):
                 if du in duration_units:
                     duration = float(duration)*duration_units[du]
                 t.duration = duration
+            elif field == "users":
+                pass
             t.save()
         except Task.DoesNotExist:
             pass
