@@ -1,7 +1,7 @@
 (($) ->
     component_stash = {}
-    del_category = ""
-    edit_category = ""
+    category_delete = ""
+    category_edit = ""
 
     $(document.body).on "click", "a.new-category", ->
         $("#new-category-modal-title").val ""
@@ -36,7 +36,7 @@
         undefined
 
     $(document.body).on "click", ".category-edit", ->
-        edit_category = $(@).closest(".panel").attr "data-category"
+        category_edit = $(@).closest(".panel").attr "data-category"
         $("#edit-category-modal-title").val($(@).closest(".panel-heading").children(".panel-title").text())
         $("#edit-category-modal").modal "show"
         undefined
@@ -47,15 +47,15 @@
             type: "POST"
             url: "/api/set/category/update"
             data:
-                id: edit_category
+                id: category_edit
                 title: title
             success: (data) ->
                 console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $(".panel[data-category='"+edit_category +"'] .panel-heading .panel-title").text title
+                $(".panel[data-category='"+category_edit +"'] .panel-heading .panel-title").text title
                 $("#edit-category-modal").modal "hide"
-                edit_category = ""
+                category_edit = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
 
@@ -63,7 +63,7 @@
         undefined
 
     $(document.body).on "click", ".category-delete", ->
-        del_category = $(@).closest(".panel").attr "data-category"
+        category_delete = $(@).closest(".panel").attr "data-category"
         $("#delete-category-modal").modal "show"
         undefined
 
@@ -72,13 +72,13 @@
             type: "POST"
             url: "/api/set/category/delete"
             data:
-                id: del_category
+                id: category_delete
             success: (data) ->
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $("div.categories div.panel[data-category='"+del_category+"']").remove()
+                $("div.categories div.panel[data-category='"+category_delete+"']").remove()
                 $("#delete-category-modal").modal "hide"
-                del_category = ""
+                category_delete = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
 

@@ -1,7 +1,7 @@
 (($) ->
     component_stash = {}
-    home_board = ""
-    board_id = ""
+    board_delete = ""
+    board_edit = ""
 
     $(document.body).on "click", "a.new-board", ->
         $("#new-board-modal-title").val ""
@@ -40,7 +40,7 @@
         undefined
 
     $(document.body).on "click", ".board-edit", ->
-        board_id = $(@).parent().parent().closest("li").attr "data-board"
+        board_edit = $(@).attr "data-id"
         $("#edit-board-modal-title").val($(@).closest(".btn-group").find(".board-link").eq(0).text())
         $("#edit-board-modal").modal "show"
         undefined
@@ -51,21 +51,21 @@
             type: "POST"
             url: "/api/set/board/update"
             data:
-                id: board_id
+                id: board_edit
                 title: title
             success: (data) ->
                 console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $("ul.boards li[data-board='"+board_id+"'] .btn-group .board-link").text title
+                $("ul.boards li[data-board='"+board_edit+"'] .btn-group .board-link").text title
                 $("#edit-board-modal").modal "hide"
-                board_id = ""
+                board_edit = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
 
     $(document.body).on "click", ".board-delete", ->
-        home_board = $(@).attr "data-task"
+        board_delete = $(@).attr "data-id"
         $("#delete-board-modal").modal "show"
         undefined
 
@@ -78,13 +78,13 @@
             type: "POST"
             url: "/api/set/board/delete"
             data:
-                id: home_board
+                id: board_delete
             success: (data) ->
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $("ul.boards li[data-board='"+home_board+"']").remove()
+                $("ul.boards li[data-board='"+board_delete+"']").remove()
                 $("#delete-board-modal").modal "hide"
-                home_board = ""
+                board_delete = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
