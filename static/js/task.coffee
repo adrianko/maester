@@ -16,7 +16,7 @@
             stop: (e, ui) ->
                 order = {}
                 for x in task_list_changed
-                    order[x] = ($(t).attr("data-task") for t in $("div.panel[data-category='"+x+"']").find(".task"))
+                    order[x] = ($(t).attr "data-task" for t in $("div.panel[data-category='"+x+"']").find ".task")
                 $.ajax
                     type: "POST"
                     url: "/api/set/task/order"
@@ -33,20 +33,46 @@
     window.taskSortable()
 
     $(document.body).on "click", "a.new-task", ->
-        $("#new-task-modal-title").val("")
-        $("#new-task-modal-desc").val("")
-        $("#new-task-modal-duration").val("0")
-        $("#new-task-modal-duration-unit").val("0")
-        $("#new-task-modal-user").val("0")
+        $("#new-task-modal-title").val ""
+        $("#new-task-modal-desc").val ""
+        $("#new-task-modal-duration").val "0"
+        $("#new-task-modal-duration-unit").val "0"
+        $("#new-task-modal-users .selectable-user").removeClass "selected"
         new_task_category = $(@).attr "data-category"
         undefined
 
-    $(document.body).on "click", "a.new-category", ->
-        $("#new-category-modal-title").val("")
+    $(document.body).on "click", "#new-task-modal-submit", ->
+        component = 0
+        if "task" not of component_stash
+            component = 1
+        $.ajax
+            type: "POST"
+            url: "/api/set/task/new"
+            data:
+                component: component
+                data:
+                    title: $("#new-task-modal-title").val()
+                    category: new_task_category
+                    order: ($(".panel[data-category='"+new_task_category+"'] .panel-body .well").length + 1)
+                    desc: $("#new-task-modal-desc").val()
+                    duration: $("#new-task-modal-duration").val()
+                    duration_unit: $("#new-task-modal-duration-unit").val()
+                    users: JSON.stringify ($(s).attr "data-user" for s in $("#new-task-modal-users div.selected"))
+            success: (data) ->
+                if component is 1
+                    component_stash.task = data.data.components
+                task = component_stash.task
+                task = task.replace "{{ title }}", $("#new-task-modal-title").val()
+                task = task.replace "{{ id }}", data.data.id
+                $("div.panel[data-category='"+new_task_category+"'] .panel-body .task-list")
+                    .append(task)
+                $("#new-task-modal").modal "hide"
+            error: (jqXHR, textStatus, err) ->
+                console.log err
         undefined
 
     $(document.body).on "click", ".task-remove", ->
-        $("#task-details-modal").modal("hide")
+        $("#task-details-modal").modal "hide"
         $(".task[data-task='"+task_open+"']").parent().remove()
         $.ajax
             type: "POST"

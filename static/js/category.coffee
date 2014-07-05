@@ -3,6 +3,10 @@
     del_category = ""
     edit_category = ""
 
+    $(document.body).on "click", "a.new-category", ->
+        $("#new-category-modal-title").val ""
+        undefined
+
     $(document.body).on "click", "#new-category-modal-submit", ->
         component = 0
         if "category" not of component_stash
@@ -34,7 +38,7 @@
     $(document.body).on "click", ".category-edit", ->
         edit_category = $(@).closest(".panel").attr "data-category"
         $("#edit-category-modal-title").val($(@).closest(".panel-heading").children(".panel-title").text())
-        $("#edit-category-modal").modal("show")
+        $("#edit-category-modal").modal "show"
         undefined
 
     $(document.body).on "click", "#edit-category-modal-submit", ->
@@ -81,7 +85,7 @@
         undefined
 
     $(document.body).on "click", "#delete-category-no", ->
-        $("#delete-category-modal").modal("hide")
+        $("#delete-category-modal").modal "hide"
         undefined
 
     $(".categories").sortable(
@@ -94,7 +98,7 @@
                 url: "/api/set/category/order"
                 data:
                     id: $(".categories").eq(0).attr "data-board"
-                    order: JSON.stringify ($(c).attr("data-category") for c in $("div.categories").find(".category"))
+                    order: JSON.stringify ($(c).attr "data-category" for c in $("div.categories").find ".category")
                 success: (data)->
                     if data.code != 200
                         console.log "ERROR: "+data.code

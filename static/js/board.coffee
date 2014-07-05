@@ -4,37 +4,7 @@
     board_id = ""
 
     $(document.body).on "click", "a.new-board", ->
-        $("#new-board-modal-title").val("")
-        undefined
-
-    $(document.body).on "click", "#new-task-modal-submit", ->
-        component = 0
-        if "task" not of component_stash
-            component = 1
-        $.ajax
-            type: "POST"
-            url: "/api/set/task/new"
-            data:
-                component: component
-                data:
-                    title: $("#new-task-modal-title").val()
-                    category: new_task_category
-                    order: ($(".panel[data-category='"+new_task_category+"'] .panel-body .well").length + 1)
-                    desc: $("#new-task-modal-desc").val()
-                    duration: $("#new-task-modal-duration").val()
-                    duration_unit: $("#new-task-modal-duration-unit").val()
-                    users: JSON.stringify ($(s).val() for s in $("#new-task-modal-users :selected"))
-            success: (data) ->
-                if component is 1
-                    component_stash.task = data.data.components
-                task = component_stash.task
-                task = task.replace "{{ title }}", $("#new-task-modal-title").val()
-                task = task.replace "{{ id }}", data.data.id
-                $("div.panel[data-category='"+new_task_category+"'] .panel-body .task-list")
-                    .append(task)
-                $("#new-task-modal").modal("hide")
-            error: (jqXHR, textStatus, err) ->
-                console.log err
+        $("#new-board-modal-title").val ""
         undefined
 
     $(document.body).on "click", "#new-board-modal-submit", ->
@@ -66,7 +36,7 @@
         undefined
 
     $(document.body).on "click", ".board-link", ->
-        window.location.href = $(@).attr("data-href")
+        window.location.href = $(@).attr "data-href"
         undefined
 
     $(document.body).on "click", ".board-edit", ->
