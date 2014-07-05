@@ -108,8 +108,8 @@
                     console.log "ERROR: "+data.code
                 else
                     data = data.data[0]
-                    $("#task-title").text(data.title)
-                    $("#task-description").text(data.description)
+                    $("#task-title").text data.title
+                    $("#task-description").text data.description
                     duration = data.duration
                     if duration < 1800
                         duration = ""
@@ -121,13 +121,13 @@
                         duration = (duration / 604800) + "wk"
                     else
                         duration = (duration / 2419200) + "mo"
-                    $("#task-duration").text(duration)
-                    $("#task-assignee ul.users").text("")
+                    $("#task-duration").text duration
+                    $("#task-assignee ul.users").text ""
                     for u in data.users
                         $("#task-assignee ul.users").append("<li>"+u.username+"</li>")
                     $(".task-detail-field").editable()
-                    $(".task-detail-field").off("click")
-                    $("#task-details-modal").modal("show")
+                    $(".task-detail-field").off "click"
+                    $("#task-details-modal").modal "show"
         undefined
 
     $(document.body).on "click", "#new-category-modal-submit", ->
@@ -140,7 +140,7 @@
             url: "/api/set/category/new"
             data:
                 component: component
-                id: $(".new-category:first").attr("data-board")
+                id: $(".new-category:first").attr "data-board"
                 title: title
             success: (data) ->
                 if data.code != 200
@@ -151,8 +151,8 @@
                 category = category.split "{{ c.id }}"
                 category = category.join data.data.id
                 category = category.replace "{{ c.title }}", title
-                $("div.categories").append(category)
-                $("#new-category-modal").modal("hide")
+                $("div.categories").append category
+                $("#new-category-modal").modal "hide"
                 taskSortable()
             error: (jqXHR, textStatus, err) ->
                 console.log err
@@ -163,7 +163,7 @@
         if "boarditem" not of component_stash
             component = 1
         title = $("#new-board-modal-title").val()
-        $("#new-board-modal").modal("hide")
+        $("#new-board-modal").modal "hide"
         $.ajax
             type: "POST"
             url: "/api/set/board/new"
@@ -180,8 +180,8 @@
                 board = board.split "{{ id }}"
                 board = board.join data.data.id
                 board = board.replace "{{ title }}", title
-                $(".boards").eq(0).append(board)
-                $("#new-board-modal").modal("hide")
+                $(".boards").eq(0).append board
+                $("#new-board-modal").modal "hide"
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
@@ -191,9 +191,9 @@
         undefined
 
     $(document.body).on "click", ".board-edit", ->
-        board_id = $(@).parent().parent().closest("li").attr("data-board")
+        board_id = $(@).parent().parent().closest("li").attr "data-board"
         $("#edit-board-modal-title").val($(@).closest(".btn-group").find(".board-link").eq(0).text())
-        $("#edit-board-modal").modal("show")
+        $("#edit-board-modal").modal "show"
         undefined
 
     $(document.body).on "click", "#edit-board-modal-submit", ->
@@ -208,20 +208,20 @@
                 console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $("ul.boards li[data-board='"+board_id+"'] .btn-group .board-link").text(title)
-                $("#edit-board-modal").modal("hide")
+                $("ul.boards li[data-board='"+board_id+"'] .btn-group .board-link").text title
+                $("#edit-board-modal").modal "hide"
                 board_id = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
 
     $(document.body).on "click", ".board-delete", ->
-        home_board = $(@).attr("data-task")
-        $("#delete-board-modal").modal('show')
+        home_board = $(@).attr "data-task"
+        $("#delete-board-modal").modal "show"
         undefined
 
     $(document.body).on "click", "#delete-board-no", ->
-        $("#delete-board-modal").modal('hide')
+        $("#delete-board-modal").modal "hide"
         undefined
 
     $(document.body).on "click", "#delete-board-yes", ->
@@ -234,14 +234,14 @@
                 if data.code != 200
                     console.log "ERROR: "+data.code
                 $("ul.boards li[data-board='"+home_board+"']").remove()
-                $("#delete-board-modal").modal("hide")
+                $("#delete-board-modal").modal "hide"
                 home_board = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
 
     $(document.body).on "click", ".category-edit", ->
-        edit_category = $(@).closest(".panel").attr("data-category")
+        edit_category = $(@).closest(".panel").attr "data-category"
         $("#edit-category-modal-title").val($(@).closest(".panel-heading").children(".panel-title").text())
         $("#edit-category-modal").modal("show")
         undefined
@@ -258,8 +258,8 @@
                 console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $(".panel[data-category='"+edit_category +"'] .panel-heading .panel-title").text(title)
-                $("#edit-category-modal").modal("hide")
+                $(".panel[data-category='"+edit_category +"'] .panel-heading .panel-title").text title
+                $("#edit-category-modal").modal "hide"
                 edit_category = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
@@ -268,8 +268,8 @@
         undefined
 
     $(document.body).on "click", ".category-delete", ->
-        del_category = $(@).closest(".panel").attr("data-category")
-        $("#delete-category-modal").modal("show")
+        del_category = $(@).closest(".panel").attr "data-category"
+        $("#delete-category-modal").modal "show"
         undefined
 
     $(document.body).on "click", "#delete-category-yes", ->
@@ -282,7 +282,7 @@
                 if data.code != 200
                     console.log "ERROR: "+data.code
                 $("div.categories div.panel[data-category='"+del_category+"']").remove()
-                $("#delete-category-modal").modal("hide")
+                $("#delete-category-modal").modal "hide"
                 del_category = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
@@ -302,7 +302,7 @@
         e.preventDefault()
         e.stopPropagation()
         $(@).parent().find(".editable").editable "toggle"
-        edit_item = $(@).attr("data-item")
+        edit_item = $(@).attr "data-item"
         undefined
 
     $(document.body).on "click", ".editable-submit", (e) ->
@@ -331,7 +331,7 @@
                 type: "POST"
                 url: "/api/set/category/order"
                 data:
-                    id: $(".categories").eq(0).attr("data-board")
+                    id: $(".categories").eq(0).attr "data-board"
                     order: JSON.stringify ($(c).attr("data-category") for c in $("div.categories").find(".category"))
                 success: (data)->
                     if data.code != 200
