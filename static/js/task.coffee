@@ -99,22 +99,26 @@
                     $("#task-title").text data.title
                     $("#task-description").text data.description
                     duration = data.duration
+                    duration_unit = ""
                     if duration < 1800
                         duration = ""
                     else if duration >= 1800 and duration < 86400
-                        duration = (duration / 3600) + "hr"
+                        duration = (duration / 3600)
+                        duration_unit = "hr"
                     else if duration >= 86400 and duration < 604800
-                        duration = (duration / 86400) + "dy"
+                        duration = (duration / 86400)
+                        duration_unit = "dy"
                     else if duration >= 604800 and duration < 2419200
-                        duration = (duration / 604800) + "wk"
+                        duration = (duration / 604800)
+                        duration_unit = "wk"
                     else
-                        duration = (duration / 2419200) + "mo"
-                    $("#task-duration").text duration
+                        duration = (duration / 2419200)
+                        duration_unit = "mo"
+                    $("#task-duration span[data-subitem='duration']").text duration
+                    $("#task-duration span[data-subitem='duration-unit']").text duration_unit
                     $("#task-assignee ul.users").text ""
                     for u in data.users
                         $("#task-assignee ul.users").append "<li>"+u.username+"</li>"
-                    $(".task-detail-field").editable()
-                    $(".task-detail-field").off "click"
                     $("#task-details-modal").modal "show"
         undefined
 
@@ -124,31 +128,13 @@
     )
 
     $(document.body).on "click", ".edit-item", (e) ->
-        e.preventDefault()
-        e.stopPropagation()
-        $(@).parent().find(".editable").editable "toggle"
-        edit_item = $(@).attr "data-item"
         undefined
 
     $(document.body).on "click", ".editable-submit", (e) ->
-        value = $(".editable-input .form-control").val()
-        $.ajax
-            type: "POST"
-            url: "/api/set/task/update"
-            data:
-                id: task_open
-                field: edit_item
-                value: value
-            success: (data) ->
-                console.log data
-                if edit_item == "title"
-                    $(".task[data-task='"+task_open+"']").text value
-                $(".task-detail-field").removeClass "editable-unsaved"
-            error: (jqXHR, textStatus, err) ->
-                console.log err
         undefined
 
     $(document.body).on "click", ".selectable-user", ->
         $(@).toggleClass "selected"
         undefined
+
 ) jQuery
