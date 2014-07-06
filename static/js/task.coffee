@@ -1,7 +1,7 @@
 (($) ->
     component_stash = {}
-    new_task_category = ""
-    task_list_changed = []
+    task_category = ""
+    task_order = []
     task_open = ""
     edit_item = ""
 
@@ -11,11 +11,11 @@
             placeholder: "placeholder"
             change: ->
                 id = $(@).closest(".panel").attr "data-category"
-                if id not in task_list_changed
-                    task_list_changed.push id
+                if id not in task_order
+                    task_order.push id
             stop: (e, ui) ->
                 order = {}
-                for x in task_list_changed
+                for x in task_order
                     order[x] = ($(t).attr "data-task" for t in $("div.panel[data-category='"+x+"']").find ".task")
                 $.ajax
                     type: "POST"
@@ -38,7 +38,7 @@
         $("#new-task-modal-duration").val "0"
         $("#new-task-modal-duration-unit").val "0"
         $("#new-task-modal-users .selectable-user").removeClass "selected"
-        new_task_category = $(@).attr "data-category"
+        task_category = $(@).attr "data-category"
         undefined
 
     $(document.body).on "click", "#new-task-modal-submit", ->
@@ -52,8 +52,8 @@
                 component: component
                 data:
                     title: $("#new-task-modal-title").val()
-                    category: new_task_category
-                    order: ($(".panel[data-category='"+new_task_category+"'] .panel-body .well").length + 1)
+                    category: task_category
+                    order: ($(".panel[data-category='"+task_category+"'] .panel-body .well").length + 1)
                     desc: $("#new-task-modal-desc").val()
                     duration: $("#new-task-modal-duration").val()
                     duration_unit: $("#new-task-modal-duration-unit").val()
@@ -64,7 +64,7 @@
                 task = component_stash.task
                 task = task.replace "{{ title }}", $("#new-task-modal-title").val()
                 task = task.replace "{{ id }}", data.data.id
-                $("div.panel[data-category='"+new_task_category+"'] .panel-body .task-list")
+                $("div.panel[data-category='"+task_category+"'] .panel-body .task-list")
                     .append(task)
                 $("#new-task-modal").modal "hide"
             error: (jqXHR, textStatus, err) ->
@@ -87,7 +87,7 @@
         undefined
 
     $(document.body).on "click", ".task", ->
-        task_open = $(@).attr('data-task')
+        task_open = $(@).attr "data-task"
         $.ajax
             type: "GET"
             url: "/api/get/task/"+task_open
@@ -112,7 +112,7 @@
                     $("#task-duration").text duration
                     $("#task-assignee ul.users").text ""
                     for u in data.users
-                        $("#task-assignee ul.users").append("<li>"+u.username+"</li>")
+                        $("#task-assignee ul.users").append "<li>"+u.username+"</li>"
                     $(".task-detail-field").editable()
                     $(".task-detail-field").off "click"
                     $("#task-details-modal").modal "show"
