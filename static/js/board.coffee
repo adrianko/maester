@@ -3,7 +3,7 @@
     board_delete = ""
     board_edit = ""
 
-    $(document.body).on "click", "a.new-board", ->
+    $(document.body).on "click", ".new-board", ->
         $("#new-board-modal-title").val ""
         undefined
 
@@ -39,9 +39,17 @@
         window.location.href = $(@).attr "data-href"
         undefined
 
-    $(document.body).on "click", ".board-edit", ->
+    $(document.body).on "click", ".board-dd", (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+        $(@).dropdown("toggle")
+        undefined
+
+    $(document.body).on "click", ".board-edit", (e) ->
+        e.preventDefault()
+        e.stopPropagation()
         board_edit = $(@).attr "data-id"
-        $("#edit-board-modal-title").val($(@).closest(".btn-group").find(".board-link").eq(0).text())
+        $("#edit-board-modal-title").val($(@).closest(".board-item").find(".board-title").text())
         $("#edit-board-modal").modal "show"
         undefined
 
@@ -57,14 +65,16 @@
                 console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $("ul.boards li[data-board='"+board_edit+"'] .btn-group .board-link").text title
+                $(".boards .board-item[data-board='"+board_edit+"'] .board-title").text title
                 $("#edit-board-modal").modal "hide"
                 board_edit = ""
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
 
-    $(document.body).on "click", ".board-delete", ->
+    $(document.body).on "click", ".board-delete", (e) ->
+        e.preventDefault()
+        e.stopPropagation()
         board_delete = $(@).attr "data-id"
         $("#delete-board-modal").modal "show"
         undefined
@@ -82,7 +92,7 @@
             success: (data) ->
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $("ul.boards li[data-board='"+board_delete+"']").remove()
+                $(".boards .board-item[data-board='"+board_delete+"']").remove()
                 $("#delete-board-modal").modal "hide"
                 board_delete = ""
             error: (jqXHR, textStatus, err) ->

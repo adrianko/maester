@@ -1,10 +1,7 @@
-<li data-board="{{ id }}">
-    <div class="btn-group">
-        <button type="button" class="btn btn-default board-link" data-href="/board/{{ id }}">{{ title }}</button>
-        <button type="button" class="btn btn-default dropdown-toggle board-dd" data-toggle="dropdown">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
+<div class="board-item board-link" data-board="{{ id }}" data-href="/board/{{ id }}">
+    <span class="board-title">{{ title }}</span>
+    <div class="dropdown pull-right">
+        <a href="#" class="dropdown-toggle board-dd" data-toggle="dropdown"><b class="caret"></b></a>
         <ul class="dropdown-menu" role="menu" style="width: 100%;">
             <li><a href="#" class="board-edit" data-id="{{ id }}">Edit</a>
             </li>
@@ -12,4 +9,4 @@
             </li>
         </ul>
     </div>
-</li>
+</div>

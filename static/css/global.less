@@ -89,19 +89,23 @@ select.form-control.inline {
     display: inline-block;
 }
 
-ul.boards, ul.boards li{
-    list-style: none;
-    margin: 0 0 5px 0;
-    padding: 0;
-}
-
 .board-link {
     width: 200px;
     background: #fff;
 }
 
 .board-dd {
-    background: #fff;
+    float: right;
+    cursor: pointer;
+    border: @tbl-border;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.board-dd:hover {
+    background: @tbl-bg;
 }
 
 .category-dd {
@@ -126,6 +130,7 @@ ul.boards, ul.boards li{
     display: none;
     cursor: pointer;
 }
+
 #task-title {
     display: inline-block;
 }
@@ -145,4 +150,21 @@ ul.boards, ul.boards li{
 
 .task-detail-field-duration {
     display: none;
+}
+
+.board-item {
+    width: 250px;
+    height: 100px;
+    border-radius: 5px;
+    border: @tbl-border;
+    cursor: pointer;
+    padding: 5px;
+    font-weight: bold;
+    margin: 0 10px 10px 0;
+}
+
+.category-scroll {
+    width: 100%;
+    overflow-x: scroll;
+    padding: 0 0 10px 0;
 }
