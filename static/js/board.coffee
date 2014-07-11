@@ -12,6 +12,7 @@
         if "boarditem" not of component_stash
             component = 1
         title = $("#new-board-modal-title").val()
+        description = $("#new-board-modal-desc").val()
         $("#new-board-modal").modal "hide"
         $.ajax
             type: "POST"
@@ -19,6 +20,7 @@
             data:
                 component: component
                 title: title
+                description: description
             success: (data) ->
                 console.log data
                 if data.code != 200
@@ -29,6 +31,7 @@
                 board = board.split "{{ id }}"
                 board = board.join data.data.id
                 board = board.replace "{{ title }}", title
+                board = board.replace "{{ description }}", description
                 $(".boards").eq(0).append board
                 $("#new-board-modal").modal "hide"
             error: (jqXHR, textStatus, err) ->
@@ -50,22 +53,26 @@
         e.stopPropagation()
         board_edit = $(@).attr "data-id"
         $("#edit-board-modal-title").val($(@).closest(".board-item").find(".board-title").text())
+        $("#edit-board-modal-desc").val($(@).closest(".board-item").find(".board-description").text())
         $("#edit-board-modal").modal "show"
         undefined
 
     $(document.body).on "click", "#edit-board-modal-submit", ->
         title = $("#edit-board-modal-title").val()
+        description = $("#edit-board-modal-desc").val()
         $.ajax
             type: "POST"
             url: "/api/set/board/update"
             data:
                 id: board_edit
                 title: title
+                description: description
             success: (data) ->
                 console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
                 $(".boards .board-item[data-board='"+board_edit+"'] .board-title").text title
+                $(".boards .board-item[data-board='"+board_edit+"'] .board-description").text description
                 $("#edit-board-modal").modal "hide"
                 board_edit = ""
             error: (jqXHR, textStatus, err) ->

@@ -21,7 +21,7 @@ def create(data):
     else:
         b = Board(
             title=data.get("title"),
-            description=""
+            description=data.get("description")
         )
         b.save()
 
@@ -53,10 +53,12 @@ def update(data):
     else:
         id = data.get("id")
         title = data.get("title")
+        description = data.get("description")
         try:
             b = Board.objects.get(pk=id)
             b.title = title
-            b.save(update_fields=["title"])
+            b.description = description
+            b.save(update_fields=["title", "description"])
         except Board.DoesNotExist:
             pass
         response = {"success": True, "request": data}

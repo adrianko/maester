@@ -1,8 +1,9 @@
 <div class="board-item board-link" data-board="{{ id }}" data-href="/board/{{ id }}">
     <span class="board-title">{{ title }}</span>
+    <div class="board-description">{{ description }}</div>
     <div class="dropdown pull-right">
         <a href="#" class="dropdown-toggle board-dd" data-toggle="dropdown"><b class="caret"></b></a>
-        <ul class="dropdown-menu" role="menu" style="width: 100%;">
+        <ul class="dropdown-menu board-dd-menu" role="menu" style="width: 100%;">
             <li><a href="#" class="board-edit" data-id="{{ id }}">Edit</a>
             </li>
             <li><a href="#" class="board-delete" data-id="{{ id }}">Delete</a>
