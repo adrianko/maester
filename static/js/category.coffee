@@ -57,7 +57,6 @@
                 id: category_edit
                 title: title
             success: (data) ->
-                console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
                 $(".panel[data-category='"+category_edit+"'] .panel-heading .panel-title").text title
@@ -100,7 +99,6 @@
         handle: ".reorder"
         placeholder: "placeholder-category"
         stop: (e, ui) ->
-            console.log $(".categories").eq(0).attr "data-board"
             $.ajax
                 type: "POST"
                 url: "/api/set/category/order"

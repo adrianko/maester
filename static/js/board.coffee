@@ -22,7 +22,6 @@
                 title: title
                 description: description
             success: (data) ->
-                console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
                 if component is 1
@@ -68,7 +67,6 @@
                 title: title
                 description: description
             success: (data) ->
-                console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
                 $(".boards .board-item[data-board='"+board_edit+"'] .board-title").text title
