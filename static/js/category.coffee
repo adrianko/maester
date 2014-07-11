@@ -2,10 +2,9 @@
     component_stash = {}
     category_delete = ""
     category_edit = ""
-    num_categories = $(".panel").length
 
     categoryWidth = () ->
-        $(".categories").width(num_categories*320)
+        $(".categories").width(($(".panel").length)*320)
         undefined
 
     categoryWidth()
@@ -37,7 +36,6 @@
                 category = category.replace "{{ c.title }}", title
                 $("div.categories").append category
                 $("#new-category-modal").modal "hide"
-                num_categories = $(".panel").length
                 categoryWidth()
                 window.taskSortable()
             error: (jqXHR, textStatus, err) ->
@@ -87,7 +85,6 @@
                     console.log "ERROR: "+data.code
                 $("div.categories div.panel[data-category='"+category_delete+"']").remove()
                 $("#delete-category-modal").modal "hide"
-                num_categories = $(".panel").length
                 categoryWidth()
                 category_delete = ""
             error: (jqXHR, textStatus, err) ->
