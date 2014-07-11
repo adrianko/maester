@@ -5,6 +5,10 @@
 
     $(document.body).on "click", ".new-board", ->
         $("#new-board-modal-title").val ""
+        $("#new-board-modal-desc").val ""
+        $("#new-board-modal-bg").val "#ffffff"
+        $("#new-board-modal-bg").attr "value", "#ffffff"
+        $(".input-group").colorpicker "setValue", "#ffffff"
         undefined
 
     $(document.body).on "click", "#new-board-modal-submit", ->
@@ -55,9 +59,11 @@
         e.preventDefault()
         e.stopPropagation()
         board_edit = $(@).attr "data-id"
+        bg_col = "#"+$(@).closest(".board-item").attr "data-background"
         $("#edit-board-modal-title").val($(@).closest(".board-item").find(".board-title").text())
         $("#edit-board-modal-desc").val($(@).closest(".board-item").find(".board-description").text())
-        $("#edit-board-modal-bg").val($(@).closest(".board-item").attr "data-background")
+        $("#edit-board-modal-bg").attr "value", bg_col
+        $(".input-group").colorpicker "setValue", bg_col
         $("#edit-board-modal").modal "show"
         undefined
 
@@ -112,4 +118,6 @@
             error: (jqXHR, textStatus, err) ->
                 console.log err
         undefined
+
+    $(".input-group").colorpicker()
 ) jQuery

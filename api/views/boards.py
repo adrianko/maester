@@ -19,10 +19,14 @@ def create(data):
     if data == {}:
         response = {"success": False, "request": data}
     else:
+        background = data.get("background")
+        if background[0] == "#":
+            background = background[1:]
+            
         b = Board(
             title=data.get("title"),
             description=data.get("description"),
-            background=data.get("background")
+            background=background
         )
         b.save()
 
