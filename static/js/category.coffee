@@ -3,7 +3,7 @@
     category_delete = ""
     category_edit = ""
     num_categories = $(".panel").length
-    
+
     categoryWidth = () ->
         $(".categories").width(num_categories*320)
         undefined
@@ -62,7 +62,7 @@
                 console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
-                $(".panel[data-category='"+category_edit +"'] .panel-heading .panel-title").text title
+                $(".panel[data-category='"+category_edit+"'] .panel-heading .panel-title").text title
                 $("#edit-category-modal").modal "hide"
                 category_edit = ""
             error: (jqXHR, textStatus, err) ->

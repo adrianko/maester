@@ -29,7 +29,6 @@ def create(data):
         
         c = Category(
             title=data.get("title"),
-            description="",
             board=Board.objects.get(pk=data.get("id")),
             order=int(max_order)+1
         )
