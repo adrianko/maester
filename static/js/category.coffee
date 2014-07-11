@@ -118,7 +118,6 @@
                 success: (data)->
                     if data.code != 200
                         console.log "ERROR: "+data.code
-                    console.log data
                 error: (jqXHR, textStatus, err) ->
                     console.log err
     ).disableSelection()
