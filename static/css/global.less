@@ -9,7 +9,12 @@
 }
 .container.board {
     width: 100%;
-    padding: 0 20px 20px;
+    padding: 52px 20px 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
 }
 
 .task {
@@ -29,6 +34,8 @@ nav .container {
 
 nav.navbar {
     margin-bottom: 0;
+    z-index: 2;
+    border-radius: 0;
 }
 
 .well {
@@ -108,6 +115,7 @@ select.form-control.inline {
     right: 0;
     margin: -42px 0 0 0;
     box-sizing: border-box;
+    background: #ffffff;
 }
 
 .board-dd:hover {

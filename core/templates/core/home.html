@@ -5,13 +5,7 @@
         <a href="#" class="new-board" data-toggle="modal" data-target="#new-board-modal">Add board</a>
         <div class="boards">
         {% for b in boards %}
-            {% with b.title as title %}
-            {% with b.id as id %}
-            {% with b.description as description %}
                 {% include "components/board-item.html" %}
-            {% endwith %}
-            {% endwith %}
-            {% endwith %}
         {% endfor %}
         </div>
     </div>
