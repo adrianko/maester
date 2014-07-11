@@ -1,5 +1,5 @@
 INSERT INTO `board` VALUES (1, 'Development', 'dev stuff', '23719f');
-INSERT INTO `board` VALUES (2, 'Design', 'design stuff', 'ffffff');
+INSERT INTO `board` VALUES (2, 'Design', 'design stuff', 'bd6f32');
 INSERT INTO `category` VALUES (1, 1, 'Backlog', 1);
 INSERT INTO `category` VALUES (2, 1, 'Deployed', 3);
 INSERT INTO `category` VALUES (3, 1, 'In Progress', 2);
