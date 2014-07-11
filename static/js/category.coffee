@@ -7,7 +7,15 @@
         $(".categories").width(($(".panel").length)*320)
         undefined
 
+    categoryColour = () ->
+        for x in $(".panel")
+            if $(x).find(".panel-heading").find(".panel-title").text().toLowerCase() == "emergency"
+                $(x).removeClass "panel-default"
+                $(x).addClass "panel-danger"
+        undefined
+
     categoryWidth()
+    categoryColour()
 
     $(document.body).on "click", "a.new-category", ->
         $("#new-category-modal-title").val ""
@@ -37,6 +45,7 @@
                 $("div.categories").append category
                 $("#new-category-modal").modal "hide"
                 categoryWidth()
+                categoryColour()
                 window.taskSortable()
             error: (jqXHR, textStatus, err) ->
                 console.log err
@@ -62,6 +71,7 @@
                 $(".panel[data-category='"+category_edit+"'] .panel-heading .panel-title").text title
                 $("#edit-category-modal").modal "hide"
                 category_edit = ""
+                categoryColour()
             error: (jqXHR, textStatus, err) ->
                 console.log err
 
