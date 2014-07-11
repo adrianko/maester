@@ -38,7 +38,7 @@
                 board = board.replace "{{ b.title }}", title
                 board = board.replace "{{ b.description }}", description
                 board = board.split "{{ b.background }}"
-                board = board.join background
+                board = board.join data.data.background
                 $(".boards").eq(0).append board
                 $("#new-board-modal").modal "hide"
             error: (jqXHR, textStatus, err) ->
@@ -85,7 +85,7 @@
                 $(".boards .board-item[data-board='"+board_edit+"'] .board-title").text title
                 $(".boards .board-item[data-board='"+board_edit+"'] .board-description").text description
                 $(".boards .board-item[data-board='"+board_edit+"']").attr "data-background", background
-                $(".boards .board-item[data-board='"+board_edit+"']").css "background", "#"+background
+                $(".boards .board-item[data-board='"+board_edit+"']").css "background", background
                 $("#edit-board-modal").modal "hide"
                 board_edit = ""
             error: (jqXHR, textStatus, err) ->

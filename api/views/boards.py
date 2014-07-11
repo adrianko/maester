@@ -22,15 +22,14 @@ def create(data):
         background = data.get("background")
         if background[0] == "#":
             background = background[1:]
-            
+
         b = Board(
             title=data.get("title"),
             description=data.get("description"),
             background=background
         )
         b.save()
-
-        response = {"success": True, "request": data, "id": b.fetch()["id"]}
+        response = {"success": True, "request": data, "id": b.fetch()["id"], "background": background}
         if data["component"] == "1":
             response["components"] = components.boarditem()
     return response
@@ -60,6 +59,8 @@ def update(data):
         title = data.get("title")
         description = data.get("description")
         background = data.get("background")
+        if background[0] == "#":
+            background = background[1:]
         try:
             b = Board.objects.get(pk=id)
             b.title = title
