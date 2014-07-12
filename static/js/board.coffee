@@ -21,7 +21,6 @@
         $("#board-modal-bg").val "#ffffff"
         $("#board-modal-bg").attr "value", "#ffffff"
         $(".input-group").colorpicker "setValue", "#ffffff"
-        $("#board-modal").modal "show"
         undefined
 
     $(document.body).on "click", "#board-modal-submit", ->

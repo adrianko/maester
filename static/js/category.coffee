@@ -31,7 +31,6 @@
         category_action = "new"
         modalLabels()
         $("#category-modal-title").val ""
-        $("#category-modal").modal "show"
         undefined
 
     $(document.body).on "click", "#category-modal-submit", ->
