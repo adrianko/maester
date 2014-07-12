@@ -73,6 +73,9 @@
 
     $(document.body).on "click", ".task-remove", ->
         $("#task-details-modal").modal "hide"
+        $("#delete-task-modal").modal "show"
+
+    $(document.body).on "click", "#delete-task-yes", ->
         $(".task[data-task='"+task_open+"']").parent().remove()
         $.ajax
             type: "POST"
@@ -82,8 +85,14 @@
             success: (data) ->
                 if data.code != 200
                     console.log "ERROR: "+data.code
+                $("#delete-task-modal").modal "hide"
             error: (jqXHR, textStatus, err) ->
                 console.log err
+        undefined
+
+    $(document.body).on "click", "#delete-task-no", ->
+        $("#delete-task-modal").modal "hide"
+        $("#task-details-modal").modal "show"
         undefined
 
     $(document.body).on "click", ".task", ->
@@ -128,9 +137,6 @@
     )
 
     $(document.body).on "click", ".edit-item", (e) ->
-        undefined
-
-    $(document.body).on "click", ".editable-submit", (e) ->
         undefined
 
     $(document.body).on "click", ".selectable-user", ->
