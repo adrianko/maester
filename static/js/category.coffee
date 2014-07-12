@@ -2,6 +2,7 @@
     component_stash = {}
     category_delete = ""
     category_edit = ""
+    category_action = ""
 
     categoryWidth = () ->
         $(".categories").width(($(".panel").length)*320)
@@ -14,68 +15,78 @@
                 $(x).addClass "panel-danger"
         undefined
 
+    modalLabels = () ->
+        if category_action == "edit"
+            $("#category-modal .modal-dialog .modal-content .modal-header .modal-title").text "Edit category"
+            $("#category-modal-submit").text "Update"
+        else
+            $("#category-modal .modal-dialog .modal-content .modal-header .modal-title").text "Add category"
+            $("#category-modal-submit").text "Add"
+        undefined
+
     categoryWidth()
     categoryColour()
 
     $(document.body).on "click", "a.new-category", ->
-        $("#new-category-modal-title").val ""
+        category_action = "new"
+        modalLabels()
+        $("#category-modal-title").val ""
+        $("#category-modal").modal "show"
         undefined
 
-    $(document.body).on "click", "#new-category-modal-submit", ->
-        component = 0
-        if "category" not of component_stash
-            component = 1
-        title = $("#new-category-modal-title").val()
-        $.ajax
-            type: "POST"
-            url: "/api/set/category/new"
-            data:
-                component: component
-                id: $(".new-category:first").attr "data-board"
-                title: title
-            success: (data) ->
-                if data.code != 200
-                    console.log "ERROR: "+data.code
-                if component is 1
-                    component_stash.category = data.data.components
-                category = component_stash.category
-                category = category.split "{{ c.id }}"
-                category = category.join data.data.id
-                category = category.replace "{{ c.title }}", title
-                $("div.categories").append category
-                $("#new-category-modal").modal "hide"
-                categoryWidth()
-                categoryColour()
-                window.taskSortable()
-            error: (jqXHR, textStatus, err) ->
-                console.log err
+    $(document.body).on "click", "#category-modal-submit", ->
+        title = $("#category-modal-title").val()
+        if category_action == "new"
+            component = 0
+            if "category" not of component_stash
+                component = 1
+            $.ajax
+                type: "POST"
+                url: "/api/set/category/new"
+                data:
+                    component: component
+                    id: $(".new-category:first").attr "data-board"
+                    title: title
+                success: (data) ->
+                    if data.code != 200
+                        console.log "ERROR: "+data.code
+                    if component is 1
+                        component_stash.category = data.data.components
+                    category = component_stash.category
+                    category = category.split "{{ c.id }}"
+                    category = category.join data.data.id
+                    category = category.replace "{{ c.title }}", title
+                    $("div.categories").append category
+                    $("#category-modal").modal "hide"
+                    categoryWidth()
+                    categoryColour()
+                    window.taskSortable()
+                error: (jqXHR, textStatus, err) ->
+                    console.log err
+        else
+            $.ajax
+                type: "POST"
+                url: "/api/set/category/update"
+                data:
+                    id: category_edit
+                    title: title
+                success: (data) ->
+                    if data.code != 200
+                        console.log "ERROR: "+data.code
+                    $(".panel[data-category='"+category_edit+"'] .panel-heading .panel-title").text title
+                    $("#category-modal").modal "hide"
+                    category_edit = ""
+                    categoryColour()
+                error: (jqXHR, textStatus, err) ->
+                    console.log err
         undefined
 
     $(document.body).on "click", ".category-edit", ->
         category_edit = $(@).closest(".panel").attr "data-category"
-        $("#edit-category-modal-title").val($(@).closest(".panel-heading").children(".panel-title").text())
-        $("#edit-category-modal").modal "show"
-        undefined
-
-    $(document.body).on "click", "#edit-category-modal-submit", ->
-        title = $("#edit-category-modal-title").val()
-        $.ajax
-            type: "POST"
-            url: "/api/set/category/update"
-            data:
-                id: category_edit
-                title: title
-            success: (data) ->
-                if data.code != 200
-                    console.log "ERROR: "+data.code
-                $(".panel[data-category='"+category_edit+"'] .panel-heading .panel-title").text title
-                $("#edit-category-modal").modal "hide"
-                category_edit = ""
-                categoryColour()
-            error: (jqXHR, textStatus, err) ->
-                console.log err
-
-
+        category_action = "edit"
+        modalLabels()
+        $("#category-modal-title").val($(@).closest(".panel-heading").children(".panel-title").text())
+        $("#category-modal").modal "show"
         undefined
 
     $(document.body).on "click", ".category-delete", ->
