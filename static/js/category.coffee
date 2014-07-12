@@ -9,7 +9,7 @@
 
     categoryColour = () ->
         for x in $(".panel")
-            if $(x).find(".panel-heading").find(".panel-title").text().toLowerCase() == "emergency"
+            if $(x).find(".panel-heading").find(".panel-title").text().toLowerCase().indexOf("emergency") > -1
                 $(x).removeClass "panel-default"
                 $(x).addClass "panel-danger"
         undefined
