@@ -3,7 +3,6 @@
     task_category = ""
     task_order = []
     task_open = ""
-    edit_item = ""
 
     window.taskSortable = () ->
         $(".task-list").sortable(
@@ -29,6 +28,59 @@
                         console.log err
         ).disableSelection()
         null
+
+    window.convertDuration = (d) ->
+        duration = d
+        duration_unit = ""
+        if duration < 1800
+            duration = ""
+        else if duration >= 1800 and duration < 86400
+            duration = (duration / 3600)
+            duration_unit = "hr"
+        else if duration >= 86400 and duration < 604800
+            duration = (duration / 86400)
+            duration_unit = "dy"
+        else if duration >= 604800 and duration < 2419200
+            duration = (duration / 604800)
+            duration_unit = "wk"
+        else
+            duration = (duration / 2419200)
+            duration_unit = "mo"
+        return {} =
+            duration: duration
+            duration_unit: duration_unit
+
+    saveTaskDetails = () ->
+        title = $("#edit-task-modal-title").val()
+        description = $("#edit-task-modal-desc").val()
+        duration = $("#edit-task-modal-duration").val()
+        duration_unit = $("#edit-task-modal-duration-unit").val()
+        users = JSON.stringify ($(s).attr "data-user" for s in $("#edit-task-modal-users .selected"))
+        $("#task-title").text title
+        $(".task[data-task='"+task_open+"'] .title").text title
+        $("#task-description").text description
+        $("#task-users .users").text ""
+        for s in $("#edit-task-modal-users .selected")
+            $("#task-users .users").append "<li>"+$(s).text()+"</li>"
+        $.ajax
+            type: "POST"
+            url: "/api/set/task/update"
+            data:
+                id: task_open
+                title: title
+                description: description
+                duration: duration+duration_unit
+                users: users
+            success: (data) ->
+                console.log data
+                if data.code != 200
+                    console.log "ERROR: "+data.code
+                d = window.convertDuration(data.data.data.duration)
+                $("#task-duration [data-subitem='duration']").text d.duration
+                $("#task-duration [data-subitem='duration-unit']").text d.duration_unit
+            error: (jqXHR, textStatus, err) ->
+                console.log err
+        undefined
 
     window.taskSortable()
 
@@ -57,7 +109,7 @@
                     desc: $("#new-task-modal-desc").val()
                     duration: $("#new-task-modal-duration").val()
                     duration_unit: $("#new-task-modal-duration-unit").val()
-                    users: JSON.stringify ($(s).attr "data-user" for s in $("#new-task-modal-users div.selected"))
+                    users: JSON.stringify ($(s).attr "data-user" for s in $("#new-task-modal-users .selected"))
             success: (data) ->
                 if component is 1
                     component_stash.task = data.data.components
@@ -106,37 +158,53 @@
                 else
                     data = data.data[0]
                     $("#task-title").text data.title
+                    $("#edit-task-modal-title").val data.title
                     $("#task-description").text data.description
-                    duration = data.duration
-                    duration_unit = ""
-                    if duration < 1800
-                        duration = ""
-                    else if duration >= 1800 and duration < 86400
-                        duration = (duration / 3600)
-                        duration_unit = "hr"
-                    else if duration >= 86400 and duration < 604800
-                        duration = (duration / 86400)
-                        duration_unit = "dy"
-                    else if duration >= 604800 and duration < 2419200
-                        duration = (duration / 604800)
-                        duration_unit = "wk"
-                    else
-                        duration = (duration / 2419200)
-                        duration_unit = "mo"
+                    $("#edit-task-modal-desc").val data.description
+                    d = window.convertDuration(data.duration)
+                    duration = d.duration
+                    duration_unit = d.duration_unit
                     $("#task-duration span[data-subitem='duration']").text duration
+                    $("#edit-task-modal-duration").val duration
                     $("#task-duration span[data-subitem='duration-unit']").text duration_unit
-                    $("#task-assignee ul.users").text ""
+                    $("#edit-task-modal-duration-unit").val duration_unit.charAt(0)
+                    $("#task-users ul.users").text ""
+                    $("#edit-task-modal-users").find(".selectable-user").removeClass "selected"
                     for u in data.users
-                        $("#task-assignee ul.users").append "<li>"+u.username+"</li>"
+                        $("#task-users ul.users").append "<li>"+u.username+"</li>"
+                        $("#edit-task-modal-users").find("[data-user='"+u.id+"']").addClass "selected"
                     $("#task-details-modal").modal "show"
         undefined
 
     $(".task-detail-container").hover(
-        -> $(@).children(".edit-item").css "display", "inline-block"
-        -> $(@).children(".edit-item").css "display", "none"
+        -> $(@).find(".edit-item").css "display", "inline-block"
+        -> $(@).find(".edit-item").css "display", "none"
     )
 
     $(document.body).on "click", ".edit-item", (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+        item = $(@).attr "data-item"
+        if $(".task-item-detail-edit:visible").length > 0
+            saveTaskDetails()
+        $(".task-item-detail-view").show()
+        $(".task-item-detail-edit").hide()
+        $(@).closest(".task-detail-container").find(".task-item-detail-view[data-item='"+item+"']").hide()
+        $(@).closest(".task-detail-container").find(".task-item-detail-edit[data-item='"+item+"']").show()
+        undefined
+
+    $(document.body).on "click", ".task-item-detail-edit", (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+        undefined
+
+    $(document.body).on "click", "#task-details-modal", (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+        if $(".task-item-detail-edit:visible").length > 0
+            saveTaskDetails()
+        $(".task-item-detail-edit").hide()
+        $(".task-item-detail-view").show()
         undefined
 
     $(document.body).on "click", ".selectable-user", ->
