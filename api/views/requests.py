@@ -1,10 +1,7 @@
 from django.http import HttpResponse
 from json import dumps
 from response import Response
-import boards
-import categories
-import tasks
-import users
+import boards, categories, tasks, users
 
 def parse(request):
     params = request.path.split('/')

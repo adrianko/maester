@@ -97,7 +97,7 @@ def update(data):
             current_users = [u.fetch()["id"] for u in User.objects.filter(task__pk=task_details["id"])]
             for cu in current_users:
                 t.users.remove(User.objects.get(pk=cu))
-                
+
             for u in users:
                 t.users.add(User.objects.get(pk=u))
             t.save()
