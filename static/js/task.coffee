@@ -34,10 +34,10 @@
         duration_unit = ""
         if duration < 1800
             duration = ""
-        else if duration >= 1800 and duration < 86400
+        else if duration >= 1800 and duration < 43200
             duration = (duration / 3600)
             duration_unit = "hr"
-        else if duration >= 86400 and duration < 604800
+        else if duration >= 43200 and duration < 604800
             duration = (duration / 86400)
             duration_unit = "dy"
         else if duration >= 604800 and duration < 2419200
