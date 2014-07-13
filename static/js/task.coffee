@@ -72,7 +72,6 @@
                 duration: duration+duration_unit
                 users: users
             success: (data) ->
-                console.log data
                 if data.code != 200
                     console.log "ERROR: "+data.code
                 d = window.convertDuration(data.data.data.duration)
