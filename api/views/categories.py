@@ -2,6 +2,7 @@ from api.models import *
 from django.db.models import Max
 import components
 from json import loads
+
 def get(response, id):
     try:
         c = Category.objects.get(pk=id)

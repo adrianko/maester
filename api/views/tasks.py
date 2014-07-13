@@ -57,10 +57,10 @@ def setOrder(data):
         response = {"success": False, "request": data}
     else:
         order = loads(data.get("order"))
-        for category, list in order.iteritems():
-            for x in range(0, len(list)):
+        for category, task_list in order.iteritems():
+            for x in range(0, len(task_list)):
                 try:
-                    t = Task.objects.get(pk=int(list[x]))
+                    t = Task.objects.get(pk=int(task_list[x]))
                     t.order = (x+1)
                     t.category_id = int(category)
                     t.save(update_fields=["order", "category_id"])
@@ -73,38 +73,37 @@ def update(data):
     if data == {}:
         response = {"success": False, "request": data}
     else:
-        update = {}
-        update["id"] = data.get("id")
-        update["title"] = data.get("title")
-        update["description"] = data.get("description")
+        task_details = {
+            "id": data.get("id"),
+            "title": data.get("title"),
+            "description": data.get("description")
+        }
         duration = data.get("duration")
         users = data.get("users")
         users = loads(users)
         try:
-            t = Task.objects.get(pk=update["id"])
-            t.title = update["title"]
-            t.description = update["description"]
+            t = Task.objects.get(pk=task_details["id"])
+            t.title = task_details["title"]
+            t.description = task_details["description"]
             if duration != "0":
-                duration_units = {"h" : 3600, "d": 3600*24, "w": 3600*24*7, "m": 3600*24*7*4}
+                duration_units = {"h": 3600, "d": 3600*24, "w": 3600*24*7, "m": 3600*24*7*4}
                 d, du = duration[:-1], duration[-1]
                 if du in duration_units:
                     d = float(d)*duration_units[du]
             else:
                 d = 0
-            update["duration"] = d
+            task_details["duration"] = d
             t.duration = d
-            current_users = [u.fetch()["id"] for u in User.objects.filter(task__pk=update["id"])]
+            current_users = [u.fetch()["id"] for u in User.objects.filter(task__pk=task_details["id"])]
+            for cu in current_users:
+                t.users.remove(User.objects.get(pk=cu))
+                
             for u in users:
-                if u not in current_users:
-                    t.users.add(User.objects.get(pk=u))
-
-            for u in current_users:
-                if u not in users:
-                    t.users.remove(User.objects.get(pk=u))
+                t.users.add(User.objects.get(pk=u))
             t.save()
         except Task.DoesNotExist:
             pass
-        response = {"success": True, "data": update}
+        response = {"success": True, "data": task_details}
     return response
 
 def remove(data):
