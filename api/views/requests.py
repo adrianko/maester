@@ -92,8 +92,7 @@ def set(response, request, params):
                 response.data = tasks.setOrder(request.POST)
         elif item == "user":
             if action == "new":
-                response.setOk()
-                response.msg = "set new user"
+                response.data = users.create(request.POST)
             elif action == "update":
                 response.setOk()
                 response.msg = "set update user"

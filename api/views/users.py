@@ -31,3 +31,19 @@ def getGravatar(id):
             pass
     except User.DoesNotExist:
         pass
+
+def create(data):
+    username = data.get("username")
+    email = data.get("email")
+    users = User.objects.filter(username=username).count()
+    emails = User.objects.filter(email=email).count()
+    if users == 0 and emails == 0:
+        u = User(
+            username=username,
+            email=email
+        )
+        u.save()
+        response = {"success": True}
+    else:
+        response = {"success": False, "request": data}
+    return response

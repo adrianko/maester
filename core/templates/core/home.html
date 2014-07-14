@@ -8,7 +8,23 @@
                 {% include "components/board-item.html" %}
         {% endfor %}
         </div>
+        <div class="users-list panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Users</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list">
+                {% for u in users %}
+                    <li>{{ u.username }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <a href="#" class="new-user" data-toggle="modal" data-target="#user-modal">Add user</a>
+            </div>
+        </div>
     </div>
     {% include "modals/board.html" %}
     {% include "popups/delete-board.html" %}
+    {% include "modals/user.html" %}
 {% endblock %}
